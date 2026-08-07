@@ -1,0 +1,123 @@
+.theme {
+  background: linear-gradient(180deg, #0a0908 0%, #0a0908 50%, #0a0908 100%);
+  color: #1a1815;
+  position: relative;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Premium Marquee */
+.marqueeContainer {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  perspective: 1000px;
+}
+
+.marqueeContent {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marqueeScroll 24s linear infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Smooth gradient fade edges for premium look */
+.marqueeContainer::before,
+.marqueeContainer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 80px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.marqueeContainer::before {
+  left: 0;
+  background: linear-gradient(to right, rgba(10, 9, 8, 1), transparent);
+}
+
+.marqueeContainer::after {
+  right: 0;
+  background: linear-gradient(to left, rgba(10, 9, 8, 1), transparent);
+}
+
+/* GPU acceleration for animations */
+.marqueeContent {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marqueeContent {
+    animation: none;
+  }
+}
+
+/* Premium theme animations and GPU optimization */
+.theme {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Premium glass effect utilities */
+.glass {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glassLight {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glassDark {
+  backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Elevated depth effects */
+.elevated {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.elevatedLarge {
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 24px 48px rgba(0, 0, 0, 0.15);
+}
+
+/* Premium glow effects */
+.glowGold {
+  box-shadow: 0 0 24px rgba(212, 175, 87, 0.3);
+}
+
+.glowGoldBright {
+  box-shadow: 0 0 48px rgba(212, 175, 87, 0.5);
+}
+
+/*
+  Note: Global styles (transitions, focus, scrolling, heading letter-spacing,
+  tap-highlight) are handled in app/globals.css to avoid CSS Module :global()
+  limitations on bare element selectors.
+*/

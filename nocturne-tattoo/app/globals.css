@@ -1,0 +1,94 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --rd-bg-1: 252 250 247; /* neutral-50 */
+  --rd-bg-2: 255 247 237; /* warm gradient */
+  --rd-fg: 17 24 39; /* gray-900 */
+  --rd-muted: 107 114 128; /* gray-500 */
+  --rd-gold: 201 162 75;
+}
+
+/*
+  Design tokens (see tailwind.config.ts):
+  Background  #0a0908 (matte black, not pure)
+  Foreground  #f5f1e8 (warm off-white)
+  Accent      gold #c9a24b / bright #e3c374
+  Rare accent oxblood #7a1f1f
+  Display     Fraunces — body Inter — utility JetBrains Mono
+*/
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0a0908;
+  color: #f5f1e8;
+}
+
+::selection {
+  background-color: #c9a24b;
+  color: #0a0908;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0908;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a241f;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c9a24b;
+}
+
+:focus-visible {
+  outline: 2px solid #c9a24b;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Global element styles ─────────────────────────────────── */
+
+/* Smooth transitions on all interactive elements */
+a,
+button,
+input,
+textarea,
+select {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Remove tap highlight on mobile */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Heading letter spacing — tight, elegant */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.02em;
+}
