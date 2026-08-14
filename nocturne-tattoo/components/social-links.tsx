@@ -17,7 +17,7 @@ export function SocialLinks({ className }: { className?: string }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-muted transition-colors hover:border-gold hover:text-gold"
+          className="flex h-10 w-10 items-center justify-center rounded-full border border-gold/30 text-foreground-muted transition-colors hover:border-gold hover:text-gold"
         >
           <Icon size={16} />
         </a>

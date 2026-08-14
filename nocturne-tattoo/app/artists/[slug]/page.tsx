@@ -50,8 +50,8 @@ export default function ArtistProfilePage({ params }: { params: { slug: string }
           </FadeUp>
           <FadeUp delay={0.1}>
             <p className="font-mono text-xs uppercase tracking-widest text-gold">{artist.role}</p>
-            <h1 className="mt-4 font-display text-5xl leading-tight text-fg sm:text-6xl">{artist.name}</h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">{artist.longBio}</p>
+            <h1 className="mt-4 font-display text-5xl leading-tight text-foreground sm:text-6xl">{artist.name}</h1>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-foreground-secondary">{artist.longBio}</p>
 
             <div className="mt-6 flex flex-wrap gap-2">
               {artist.styleSlugs.map((s) => (
@@ -60,13 +60,13 @@ export default function ArtistProfilePage({ params }: { params: { slug: string }
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <span className="text-sm text-muted">{artist.years} years tattooing</span>
+              <span className="text-sm text-foreground-muted">{artist.years} years tattooing</span>
               <span className="text-border">&middot;</span>
               <a
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-sm text-muted hover:text-gold"
+                className="flex items-center gap-1.5 text-sm text-foreground-muted hover:text-gold"
               >
                 <Instagram size={14} /> {artist.handle}
               </a>
@@ -94,7 +94,7 @@ export default function ArtistProfilePage({ params }: { params: { slug: string }
 
       <section className="pb-24 sm:pb-32">
         <div className="container">
-          <h2 className="font-display text-3xl text-fg">Selected work</h2>
+          <h2 className="font-display text-3xl text-foreground">Selected work</h2>
           <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {pieces.map((piece, i) => (
               <FadeUp key={piece.id} delay={i * 0.05} className="group overflow-hidden rounded-xl2 border border-border">

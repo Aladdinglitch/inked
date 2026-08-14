@@ -155,7 +155,7 @@ export function GalleryGrid({ pieces }: { pieces: GalleryPiece[] }) {
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-void/90 via-void/0 to-void/0 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 <div className="absolute inset-x-4 bottom-4 translate-y-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                  <p className="font-display text-base text-fg">{piece.title}</p>
+                  <p className="font-display text-base text-foreground">{piece.title}</p>
                   <p className="text-xs text-gold">{artist?.name}</p>
                 </div>
                 <span
@@ -166,7 +166,7 @@ export function GalleryGrid({ pieces }: { pieces: GalleryPiece[] }) {
                     toggleFavorite(piece.id);
                   }}
                   className={cn(
-                    "absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-void/60 text-fg backdrop-blur-sm transition-colors",
+                    "absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-void/80 text-foreground backdrop-blur-sm transition-colors",
                     favorites.has(piece.id) && "text-oxblood-bright"
                   )}
                 >
@@ -213,7 +213,7 @@ function FilterPill({
         "rounded-full border px-4 py-2 text-xs font-medium tracking-wide transition-colors",
         active
           ? "border-gold bg-gold text-void"
-          : "border-border text-muted hover:border-gold/50 hover:text-fg"
+          : "border-gold/30 text-foreground-secondary hover:border-gold/60 hover:text-foreground"
       )}
       aria-pressed={active}
     >

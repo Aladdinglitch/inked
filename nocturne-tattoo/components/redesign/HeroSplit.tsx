@@ -95,7 +95,7 @@ export default function HeroSplit() {
               initial="hidden"
               animate="visible"
             >
-              <h1 className="font-display text-6xl lg:text-8xl font-light leading-[1.1] text-fg tracking-tight">
+              <h1 className="font-display text-6xl lg:text-8xl font-light leading-[1.1] text-foreground tracking-tight">
                 Where
                 <br />
                 <span className="relative inline-block">
@@ -129,7 +129,7 @@ export default function HeroSplit() {
               custom={2}
               initial="hidden"
               animate="visible"
-              className="text-lg lg:text-xl leading-relaxed text-muted/85 max-w-xl font-light tracking-wide"
+              className="text-lg lg:text-xl leading-relaxed text-foreground-secondary max-w-xl font-light tracking-wide"
             >Transform your ideas into timeless tattoos and professional piercings, crafted with creativity, precision, and uncompromising care</motion.p>
             {/* Premium CTA buttons with magnetic effect */}
             <motion.div
@@ -156,7 +156,7 @@ export default function HeroSplit() {
               animate="visible"
               className="grid grid-cols-3 gap-6 pt-12 border-t border-gold/20"
             >
-              <StatItem value="10+" label="Years Open" />
+              <StatItem value="4+" label="Years Open" />
               <StatItem value="3" label="Artists" />
               <StatItem value="2300+" label="Pieces" />
             </motion.div>
@@ -197,7 +197,7 @@ export default function HeroSplit() {
                 <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/20 to-transparent opacity-90" />
 
                 {/* Floating title badge */}
-                <div className="absolute left-6 top-6 rounded-2xl border border-white/10 bg-black/35 px-4 py-2 backdrop-blur-xl text-xs uppercase tracking-[0.28em] text-gold/70 shadow-lg shadow-black/20">
+                <div className="absolute left-6 top-6 rounded-2xl border border-white/10 bg-black/35 px-4 py-2 backdrop-blur-xl text-xs uppercase tracking-[0.28em] text-foreground-accent shadow-lg shadow-black/20">
                   Signature Portrait
                 </div>
 
@@ -205,7 +205,7 @@ export default function HeroSplit() {
                 <motion.div
                   className="absolute bottom-6 left-6 right-6 rounded-[2rem] border border-white/10 bg-black/40 p-6 backdrop-blur-2xl shadow-2xl shadow-black/30 opacity-90 transition-opacity duration-500 group-hover:opacity-100"
                 >
-                  <p className="text-xs uppercase tracking-widest text-gold/60 mb-2">
+                  <p className="text-xs uppercase tracking-widest text-foreground-accent mb-2">
                     Studio Highlight
                   </p>
                   <p className="text-2xl font-light text-white">
@@ -245,7 +245,7 @@ export default function HeroSplit() {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-muted/40"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-foreground-muted"
         animate={shouldReduce ? undefined : { y: [0, 12, 0] }}
         transition={{ duration: 2.5, repeat: Infinity }}
       >
@@ -298,10 +298,10 @@ function StatItem({ value, label }: { value: string; label: string }) {
       transition={{ duration: 0.3 }}
       className="group"
     >
-      <p className="text-3xl lg:text-4xl font-light text-gold/90 group-hover:text-gold transition-colors">
+      <p className="text-3xl lg:text-4xl font-light text-foreground-accent group-hover:text-gold transition-colors">
         {value}
       </p>
-      <p className="text-xs uppercase tracking-widest text-muted/60 mt-2 group-hover:text-muted/80 transition-colors">
+      <p className="text-xs uppercase tracking-widest text-foreground-muted mt-2 group-hover:text-foreground-secondary transition-colors">
         {label}
       </p>
     </motion.div>

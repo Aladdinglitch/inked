@@ -100,10 +100,10 @@ export default function FeatureSpotlight() {
             </div>
           </motion.div>
 
-          <h2 className="font-display text-5xl lg:text-7xl font-light text-fg mb-8 tracking-tight">
+          <h2 className="font-display text-5xl lg:text-7xl font-light text-foreground mb-8 tracking-tight">
             Thoughtfully <span className="italic text-gold">Crafted</span>
           </h2>
-          <p className="mx-auto max-w-3xl text-lg lg:text-xl text-muted/80 leading-relaxed font-light">
+          <p className="mx-auto max-w-3xl text-lg lg:text-xl text-foreground-secondary leading-relaxed font-light">
             Every tattoo and piercing is an investment in your story. We approach each piece with artistic precision, meticulous execution, and an unwavering commitment to excellence.
           </p>
         </motion.div>
@@ -163,7 +163,7 @@ function FeatureCard({
         )}
 
         {/* Base background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-gold/8 to-gold/3 -z-10 rounded-2xl" />
+        <div className="absolute inset-0 bg-gradient-to-br from-void/85 to-ink/85 -z-10 rounded-2xl" />
 
         {/* Animated gradient overlay on hover */}
         <motion.div
@@ -176,7 +176,7 @@ function FeatureCard({
         {/* Content */}
         <div className="flex-1 relative z-10 flex items-center justify-center">
           <motion.h3
-            className="font-display text-3xl lg:text-4xl font-light text-fg text-center group-hover:text-gold transition-colors duration-500"
+            className="font-display text-3xl lg:text-4xl font-light text-foreground text-center group-hover:text-gold transition-colors duration-500"
           >
             {feature.title}
           </motion.h3>

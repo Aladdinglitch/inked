@@ -81,10 +81,10 @@ export default function PortfolioShowcase() {
             </div>
           </motion.div>
 
-          <h2 className="font-display text-5xl lg:text-7xl font-light text-fg mb-8 tracking-tight">
+          <h2 className="font-display text-5xl lg:text-7xl font-light text-foreground mb-8 tracking-tight">
             Timeless <span className="italic text-gold">Art</span> on Skin
           </h2>
-          <p className="max-w-3xl text-lg lg:text-xl text-muted/80 leading-relaxed font-light">
+          <p className="max-w-3xl text-lg lg:text-xl text-foreground-secondary leading-relaxed font-light">
             Explore our collection of custom tattoos and piercings. Each piece represents months of consultation, design refinement, and meticulous execution.
           </p>
         </motion.div>
@@ -180,15 +180,15 @@ function PortfolioCard({
         />
 
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-void/95 via-ink/55 to-transparent" />
 
         {/* Content overlay */}
         <motion.div
           className="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-ink via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
         >
-          <p className="text-xs uppercase tracking-widest text-gold/60 mb-3">Featured Work</p>
+          <p className="text-xs uppercase tracking-widest text-foreground-accent mb-3">Featured Work</p>
           <h3 className="font-display text-2xl text-white mb-2">{title}</h3>
-          <p className="text-sm text-white/80 capitalize">{style.replace("-", " ")}</p>
+          <p className="text-sm text-foreground-secondary capitalize">{style.replace("-", " ")}</p>
         </motion.div>
 
         {/* Floating accent */}
@@ -206,10 +206,10 @@ function PortfolioCard({
         whileHover={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <p className="font-light text-lg text-fg group-hover:text-gold transition-colors duration-300">
+        <p className="font-light text-lg text-foreground group-hover:text-gold transition-colors duration-300">
           {title}
         </p>
-        <p className="text-sm text-muted/60 mt-2 capitalize">
+        <p className="text-sm text-foreground-muted mt-2 capitalize">
           {style.replace("-", " ")}
         </p>
       </motion.div>

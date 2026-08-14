@@ -58,10 +58,10 @@ export default function AboutPage() {
           </FadeUp>
           <FadeUp delay={0.1}>
             <p className="font-mono text-xs uppercase tracking-widest text-gold">Our Story</p>
-            <h1 className="mt-4 font-display text-5xl leading-tight text-fg sm:text-6xl">
+            <h1 className="mt-4 font-display text-5xl leading-tight text-foreground sm:text-6xl">
               Inked Attraction is built around one belief: every piece should feel personal.
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted">
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-foreground-secondary">
               I&apos;m Elizabeth, the artist behind INKED ATTRACTION Tattoo & Piercing Studio in Lagos.
               I believe tattoos and piercings should be more than ink or metal — they should tell a story,
               celebrate individuality, and feel like art designed for your body. From the first consultation

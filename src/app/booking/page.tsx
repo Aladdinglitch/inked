@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BookingFormWrapper } from "@/components/booking/BookingFormWrapper";
+import { ServiceSelection } from "@/components/booking/ServiceSelection";
 import { FadeUp } from "@/components/motion/FadeUp";
 
 export const metadata: Metadata = {
@@ -17,7 +17,7 @@ export default function BookingPage() {
           Share your idea, placement, and budget. We&apos;ll confirm availability, pricing, and deposit details within two business days.
         </p>
       </FadeUp>
-      <BookingFormWrapper />
+      <ServiceSelection />
     </div>
   );
 }

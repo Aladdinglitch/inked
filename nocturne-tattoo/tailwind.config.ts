@@ -16,8 +16,13 @@ const config: Config = {
         surface: "#f8f6f3", // premium light surface
         ink: "#2a2622", // deep charcoal text
         border: "#e8e4df", // refined border
-        fg: "#1a1815", // primary text (nearly black, warm)
-        muted: "#8a8178", // secondary text (warmer gray)
+        fg: "#1a1815", // primary text on light surfaces
+        muted: "#8a8178", // secondary text on light surfaces
+        foreground: "rgb(var(--foreground) / <alpha-value>)",
+        "foreground-secondary": "rgb(var(--foreground-secondary) / <alpha-value>)",
+        "foreground-muted": "rgb(var(--foreground-muted) / <alpha-value>)",
+        "foreground-subtle": "rgb(var(--foreground-subtle) / <alpha-value>)",
+        "foreground-accent": "rgb(var(--foreground-accent) / <alpha-value>)",
         gold: {
           DEFAULT: "#d4af57", // luxe gold (elevated tone)
           bright: "#e8c95f", // bright accent

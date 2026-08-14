@@ -8,6 +8,11 @@
   --rd-fg: 17 24 39; /* gray-900 */
   --rd-muted: 107 114 128; /* gray-500 */
   --rd-gold: 201 162 75;
+  --foreground: 248 250 252;
+  --foreground-secondary: 203 213 225;
+  --foreground-muted: 161 161 170;
+  --foreground-subtle: 148 163 184;
+  --foreground-accent: 232 201 95;
 }
 
 /*

@@ -7,13 +7,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { artists } from "@/content/artists";
 import { styles } from "@/content/styles";
+import { tattooPlacements } from "@/content/piercings";
 import { bookingSchema, type BookingFormValues } from "@/lib/validators";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-const placements = ["Arm", "Leg", "Torso", "Back", "Hand", "Neck", "Other"];
 const sizes = ["Mini (<2\")", "Small (2–4\")", "Medium (4–8\")", "Large (8\"+)", "Full sleeve / back"];
 const budgets = ["Under $300", "$300–600", "$600–1200", "$1200+", "Flexible"];
 
@@ -35,6 +35,7 @@ export function BookingForm() {
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingSchema),
     defaultValues: {
+      serviceType: "tattoo",
       artistId: preArtist,
       styleId: "",
       placement: "",
@@ -135,7 +136,7 @@ export function BookingForm() {
           <div>
             <Label>Placement</Label>
             <div className="mt-2 flex flex-wrap gap-2">
-              {placements.map((p) => (
+              {tattooPlacements.map((p) => (
                 <button
                   key={p}
                   type="button"

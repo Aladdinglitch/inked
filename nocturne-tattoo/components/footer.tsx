@@ -32,11 +32,11 @@ export function Footer() {
             <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50 font-display text-base text-gold">
               IA
             </span>
-            <span className="font-display text-lg text-fg">
+            <span className="font-display text-lg text-foreground">
               Inked <span className="text-gold">Attraction</span>
             </span>
           </Link>
-          <p className="mt-5 max-w-xs text-sm leading-relaxed text-muted">
+          <p className="mt-5 max-w-xs text-sm leading-relaxed text-foreground-secondary">
             Transform your ideas into timeless tattoos and professional piercings, crafted with creativity, precision, and uncompromising care.
           </p>
           <SocialLinks className="mt-6" />
@@ -48,7 +48,7 @@ export function Footer() {
             <ul className="mt-5 space-y-3">
               {col.links.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-sm text-muted transition-colors hover:text-fg">
+                  <Link href={l.href} className="text-sm text-foreground-muted transition-colors hover:text-foreground">
                     {l.label}
                   </Link>
                 </li>
@@ -59,7 +59,7 @@ export function Footer() {
 
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-gold">Contact</p>
-          <ul className="mt-5 space-y-4 text-sm text-muted">
+          <ul className="mt-5 space-y-4 text-sm text-foreground-secondary">
             <li className="flex gap-3">
               <MapPin size={16} className="mt-0.5 shrink-0 text-gold" />
               <span>Lagos, Lagos State, Nigeria</span>
@@ -81,7 +81,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-border py-6">
-        <div className="container flex flex-col items-center justify-between gap-3 text-xs text-muted sm:flex-row">
+        <div className="container flex flex-col items-center justify-between gap-3 text-xs text-foreground-muted sm:flex-row">
           <p>&copy; {new Date().getFullYear()} Inked Attraction. All rights reserved.</p>
           <p>18+ clients only. Appointments are by consultation.</p>
         </div>

@@ -40,8 +40,8 @@ export default function ContactPage() {
                 <div key={d.label} className="flex gap-4">
                   <d.icon size={18} className="mt-0.5 shrink-0 text-gold" />
                   <div>
-                    <dt className="text-xs uppercase tracking-widest text-muted">{d.label}</dt>
-                    <dd className="mt-1 text-sm text-fg">{d.value}</dd>
+                    <dt className="text-xs uppercase tracking-widest text-foreground-muted">{d.label}</dt>
+                    <dd className="mt-1 text-sm text-foreground">{d.value}</dd>
                   </div>
                 </div>
               ))}

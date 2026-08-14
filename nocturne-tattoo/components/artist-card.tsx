@@ -30,12 +30,12 @@ export function ArtistCard({ artist, index = 0 }: { artist: Artist; index?: numb
           )}
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-void via-void/10 to-transparent" />
-        <div className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-void/60 text-fg opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
+        <div className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-void/80 text-foreground opacity-0 backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100">
           <ArrowUpRight size={16} />
         </div>
         {!artist.booksOpen && (
           <div className="absolute left-4 top-4">
-            <Badge className="border-oxblood/40 bg-oxblood/20 text-fg/80">Books Closed</Badge>
+            <Badge className="border-oxblood/40 bg-oxblood/30 text-foreground-secondary">Books Closed</Badge>
           </div>
         )}
       </div>

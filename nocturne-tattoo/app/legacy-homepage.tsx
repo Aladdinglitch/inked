@@ -21,7 +21,7 @@ const StatCard = ({ value, suffix, label, delay }: any) => (
         {value}
         <span className="text-4xl sm:text-5xl">{suffix}</span>
       </p>
-      <p className="relative mt-3 text-sm uppercase tracking-widest text-muted/80 transition-colors duration-500 group-hover:text-muted">
+      <p className="relative mt-3 text-sm uppercase tracking-widest text-foreground-muted transition-colors duration-500 group-hover:text-foreground-secondary">
         {label}
       </p>
       <div className="absolute top-0 right-0 h-32 w-32 bg-gold/10 rounded-full blur-3xl -z-10 group-hover:bg-gold/20 transition-all duration-500" />
@@ -72,18 +72,18 @@ const ArtistShowcase = ({ artist, index }: any) => (
       <div className="aspect-square bg-gradient-to-br from-gold/10 to-gold/5 relative overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-gold/40 text-sm mb-2">Featured Artist</p>
-            <h3 className="font-display text-3xl text-gold/60">{artist.name.split(" ")[0]}</h3>
+            <p className="text-foreground-accent text-sm mb-2">Featured Artist</p>
+            <h3 className="font-display text-3xl text-foreground-accent">{artist.name.split(" ")[0]}</h3>
           </div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       </div>
       <div className="p-6 relative">
         <h3 className="font-display text-xl text-gold mb-1">{artist.name}</h3>
-        <p className="text-sm text-muted/60 mb-4">{artist.role}</p>
-        <p className="text-xs text-muted/50 leading-relaxed mb-4">{artist.bio}</p>
+        <p className="text-sm text-foreground-secondary mb-4">{artist.role}</p>
+        <p className="text-xs text-foreground-muted leading-relaxed mb-4">{artist.bio}</p>
         <div className="flex items-center justify-between">
-          <span className="text-xs uppercase tracking-widest text-muted/40">{artist.years} yrs</span>
+          <span className="text-xs uppercase tracking-widest text-foreground-muted">{artist.years} yrs</span>
           {artist.booksOpen && (
             <span className="px-2 py-1 rounded-full bg-gold/20 text-gold text-xs font-semibold">
               Booking
@@ -141,8 +141,8 @@ const GalleryItem = ({ piece, index }: any) => (
     <div className="relative aspect-square bg-gradient-to-br from-gold/10 to-gold/5 border border-gold/20">
       <div className="absolute inset-0 flex items-center justify-center text-center">
         <div>
-          <p className="text-gold/40 text-xs mb-1">Gallery</p>
-          <h4 className="font-display text-gold/60 text-lg">{piece.title}</h4>
+          <p className="text-foreground-accent text-xs mb-1">Gallery</p>
+          <h4 className="font-display text-foreground-accent text-lg">{piece.title}</h4>
         </div>
       </div>
       <div className="absolute inset-0 bg-gradient-to-t from-ink/60 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -175,10 +175,10 @@ export default function LegacyHome() {
             className="mb-20 text-center"
           >
             <p className="mb-4 text-sm uppercase tracking-widest text-gold/70">Est. 2015</p>
-            <h2 className="font-display text-5xl sm:text-6xl text-fg mb-6">
+            <h2 className="font-display text-5xl sm:text-6xl text-foreground mb-6">
               A Decade of <span className="text-gold italic">Excellence</span>
             </h2>
-            <p className="mx-auto max-w-2xl text-lg text-muted/80">
+            <p className="mx-auto max-w-2xl text-lg text-foreground-secondary">
               Metrics that speak to our commitment — steady hands, consistent vision, and the clients who trust us with their skin.
             </p>
           </motion.div>
@@ -205,7 +205,7 @@ export default function LegacyHome() {
             className="mb-20 text-center"
           >
             <p className="mb-4 text-sm uppercase tracking-widest text-gold/70">Artistic Range</p>
-            <h2 className="font-display text-5xl sm:text-6xl text-fg">
+            <h2 className="font-display text-5xl sm:text-6xl text-foreground">
               Eight Distinct <span className="text-gold italic">Disciplines</span>
             </h2>
           </motion.div>
@@ -235,10 +235,10 @@ export default function LegacyHome() {
             className="mb-20 text-center"
           >
             <p className="mb-4 text-sm uppercase tracking-widest text-gold/70">Core Team</p>
-            <h2 className="font-display text-5xl sm:text-6xl text-fg">
+            <h2 className="font-display text-5xl sm:text-6xl text-foreground">
               Meet Our <span className="text-gold italic">Artists</span>
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-muted/80">
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-foreground-secondary">
               Each artist brings a distinct voice and expertise. All available for consultations.
             </p>
           </motion.div>
@@ -278,10 +278,10 @@ export default function LegacyHome() {
             className="mb-20 text-center"
           >
             <p className="mb-4 text-sm uppercase tracking-widest text-gold/70">Our Work</p>
-            <h2 className="font-display text-5xl sm:text-6xl text-fg mb-6">
+            <h2 className="font-display text-5xl sm:text-6xl text-foreground mb-6">
               Portfolio <span className="text-gold italic">Highlights</span>
             </h2>
-            <p className="mx-auto max-w-2xl text-lg text-muted/80">
+            <p className="mx-auto max-w-2xl text-lg text-foreground-secondary">
               A selection from 3,200+ completed pieces spanning all styles and scales.
             </p>
           </motion.div>
@@ -321,7 +321,7 @@ export default function LegacyHome() {
             className="mb-20 text-center"
           >
             <p className="mb-4 text-sm uppercase tracking-widest text-gold/70">Social Proof</p>
-            <h2 className="font-display text-5xl sm:text-6xl text-fg">
+            <h2 className="font-display text-5xl sm:text-6xl text-foreground">
               What Clients <span className="text-gold italic">Say</span>
             </h2>
           </motion.div>
@@ -349,10 +349,10 @@ export default function LegacyHome() {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             viewport={{ once: true, margin: "-100px" }}
           >
-            <h2 className="font-display text-5xl sm:text-6xl text-fg mb-6">
+            <h2 className="font-display text-5xl sm:text-6xl text-foreground mb-6">
               Ready to Make Your <span className="text-gold italic">Mark</span>?
             </h2>
-            <p className="mx-auto max-w-2xl text-xl text-muted/80 mb-12">
+            <p className="mx-auto max-w-2xl text-xl text-foreground-secondary mb-12">
               Start with a consultation. Discuss ideas, placement, and timeline with the right artist.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

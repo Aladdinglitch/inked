@@ -111,7 +111,7 @@ export function BookingForm() {
           reply at <span className="text-fg">{form.email}</span> within two business days to
           confirm details and take a deposit.
         </p>
-        <div className="mx-auto mt-8 max-w-sm rounded-lg border border-border bg-ink p-5 text-left text-sm">
+        <div className="mx-auto mt-8 max-w-sm rounded-lg border border-gold/30 bg-ink p-5 text-left text-sm">
           <SummaryRow label="Style" value={form.style} />
           <SummaryRow label="Placement" value={form.placement} />
           <SummaryRow label="Size" value={form.size} />
@@ -284,7 +284,7 @@ export function BookingForm() {
                     {form.files.map((name, i) => (
                       <li
                         key={name + i}
-                        className="flex items-center justify-between rounded-lg border border-border bg-ink px-4 py-2 text-sm text-fg"
+                        className="flex items-center justify-between rounded-lg border border-gold/30 bg-ink px-4 py-2 text-sm text-foreground-secondary"
                       >
                         {name}
                         <button
@@ -411,8 +411,8 @@ function PillGrid({
 function SummaryRow({ label, value, last = false }: { label: string; value?: string; last?: boolean }) {
   return (
     <div className={cn("flex items-center justify-between py-2.5", !last && "border-b border-border/60")}>
-      <span className="text-xs uppercase tracking-wide text-muted">{label}</span>
-      <span className="text-fg">{value || "—"}</span>
+      <span className="text-xs uppercase tracking-wide text-foreground-muted">{label}</span>
+      <span className="text-foreground">{value || "—"}</span>
     </div>
   );
 }

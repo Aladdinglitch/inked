@@ -59,7 +59,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     <>
       <article className="pt-40 pb-24 sm:pt-48 sm:pb-32">
         <div className="container max-w-2xl">
-          <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-muted hover:text-gold">
+          <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm text-foreground-muted hover:text-gold">
             <ArrowLeft size={14} /> Back to Journal
           </Link>
 
@@ -67,8 +67,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             <p className="font-mono text-xs uppercase tracking-widest text-gold">
               {post.category} &middot; {post.readTime}
             </p>
-            <h1 className="mt-4 font-display text-4xl leading-tight text-fg sm:text-5xl">{post.title}</h1>
-            <p className="mt-4 text-sm text-muted">
+            <h1 className="mt-4 font-display text-4xl leading-tight text-foreground sm:text-5xl">{post.title}</h1>
+            <p className="mt-4 text-sm text-foreground-muted">
               {new Date(post.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}
             </p>
           </FadeUp>
@@ -82,7 +82,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <div className="prose-none mt-10 space-y-6">
             {paragraphs.map((p, i) => (
               <FadeUp key={i} delay={i * 0.06}>
-                <p className="text-base leading-relaxed text-fg/85">{p}</p>
+                <p className="text-base leading-relaxed text-foreground-secondary">{p}</p>
               </FadeUp>
             ))}
           </div>

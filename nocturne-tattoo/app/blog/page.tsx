@@ -34,14 +34,14 @@ export default function BlogPage() {
                   <p className="font-mono text-[11px] uppercase tracking-widest text-gold">
                     {post.category} &middot; {post.readTime}
                   </p>
-                  <h2 className="mt-3 flex items-start justify-between gap-3 font-display text-xl leading-snug text-fg">
+                  <h2 className="mt-3 flex items-start justify-between gap-3 font-display text-xl leading-snug text-foreground">
                     {post.title}
                     <ArrowUpRight
                       size={18}
-                      className="mt-1 shrink-0 text-muted transition-colors group-hover:text-gold"
+                      className="mt-1 shrink-0 text-foreground-muted transition-colors group-hover:text-gold"
                     />
                   </h2>
-                  <p className="mt-2 text-sm leading-relaxed text-muted">{post.excerpt}</p>
+                  <p className="mt-2 text-sm leading-relaxed text-foreground-secondary">{post.excerpt}</p>
                 </div>
               </Link>
             </FadeUp>

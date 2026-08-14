@@ -21,7 +21,7 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
               aria-expanded={isOpen}
               aria-controls={`faq-panel-${i}`}
             >
-              <span className="font-display text-lg text-fg">{item.question}</span>
+              <span className="font-display text-lg text-foreground">{item.question}</span>
               <Plus
                 size={18}
                 className={cn(
@@ -40,7 +40,7 @@ export function FaqAccordion({ items }: { items: FaqItem[] }) {
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                   className="overflow-hidden"
                 >
-                  <p className="max-w-2xl pb-6 text-sm leading-relaxed text-muted">{item.answer}</p>
+                  <p className="max-w-2xl pb-6 text-sm leading-relaxed text-foreground-secondary">{item.answer}</p>
                 </motion.div>
               )}
             </AnimatePresence>

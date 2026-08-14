@@ -19,8 +19,8 @@ export function SectionHeading({
       {eyebrow && (
         <p className="mb-4 font-mono text-xs uppercase tracking-widest text-gold">{eyebrow}</p>
       )}
-      <h2 className="font-display text-4xl leading-[1.1] text-fg sm:text-5xl">{title}</h2>
-      {description && <p className="mt-4 text-base leading-relaxed text-muted">{description}</p>}
+      <h2 className="font-display text-4xl leading-[1.1] text-foreground sm:text-5xl">{title}</h2>
+      {description && <p className="mt-4 text-base leading-relaxed text-foreground-secondary">{description}</p>}
     </FadeUp>
   );
 }

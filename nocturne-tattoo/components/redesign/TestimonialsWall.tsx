@@ -68,10 +68,10 @@ export default function TestimonialsWall() {
             </div>
           </motion.div>
 
-          <h2 className="font-display text-5xl lg:text-7xl font-light text-fg mb-8 tracking-tight">
+          <h2 className="font-display text-5xl lg:text-7xl font-light text-foreground mb-8 tracking-tight">
             What Clients <span className="italic text-gold">Love</span>
           </h2>
-          <p className="mx-auto max-w-3xl text-lg lg:text-xl text-muted/80 leading-relaxed font-light">
+          <p className="mx-auto max-w-3xl text-lg lg:text-xl text-foreground-secondary leading-relaxed font-light">
             Real experiences from those who&apos;ve trusted us with their skin.
           </p>
         </motion.div>
@@ -122,7 +122,7 @@ function TestimonialCard({
       {/* Glass background glow */}
       <div className="absolute -inset-0.5 bg-gradient-to-br from-gold/30 to-gold/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur -z-10" />
 
-      <div className="relative overflow-hidden rounded-3xl border border-gold/20 bg-gradient-to-br from-gold/10 to-gold/5 backdrop-blur-xl p-10 transition-all duration-500 group-hover:border-gold/40 group-hover:bg-gold/12 flex flex-col h-full">
+      <div className="relative overflow-hidden rounded-3xl border border-gold/20 bg-gradient-to-br from-void/90 to-ink/90 backdrop-blur-xl p-10 transition-all duration-500 group-hover:border-gold/40 group-hover:bg-gold/12 flex flex-col h-full">
         {/* Animated gradient overlay on hover */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-gold/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -142,7 +142,7 @@ function TestimonialCard({
 
           {/* Quote */}
           <motion.p
-            className="text-lg lg:text-xl leading-relaxed text-fg font-light flex-1 mb-8 group-hover:text-gold/90 transition-colors duration-300"
+            className="text-lg lg:text-xl leading-relaxed text-foreground font-light flex-1 mb-8 group-hover:text-gold/90 transition-colors duration-300"
             initial={{ opacity: 0.85 }}
             whileHover={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
@@ -166,10 +166,10 @@ function TestimonialCard({
             whileHover={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <p className="font-medium text-fg group-hover:text-gold transition-colors duration-300">
+            <p className="font-medium text-foreground group-hover:text-gold transition-colors duration-300">
               {testimonial.name}
             </p>
-            <p className="text-xs uppercase tracking-widest text-muted/60 mt-2 group-hover:text-muted/80 transition-colors duration-300">
+            <p className="text-xs uppercase tracking-widest text-foreground-muted mt-2 group-hover:text-foreground-secondary transition-colors duration-300">
               Verified Client
             </p>
           </motion.footer>

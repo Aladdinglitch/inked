@@ -29,7 +29,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-4xl font-display text-6xl leading-[1.02] text-fg sm:text-7xl lg:text-8xl"
+          className="max-w-4xl font-display text-6xl leading-[1.02] text-foreground sm:text-7xl lg:text-8xl"
         >
           Ink that&apos;s built to <span className="italic text-gold">outlast</span> the trend.
         </motion.h1>
@@ -38,7 +38,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-7 max-w-lg text-lg leading-relaxed text-muted"
+          className="mt-7 max-w-lg text-lg leading-relaxed text-foreground-secondary"
         >
           Six resident artists, one shared standard: custom design, unhurried sessions, and work
           that still reads clean twenty years in.
@@ -65,7 +65,7 @@ export function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 1 }}
-        className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-muted sm:flex"
+        className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-foreground-muted sm:flex"
       >
         <span className="font-mono text-[10px] uppercase tracking-widest">Scroll</span>
         <motion.div animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.8 }}>

@@ -17,8 +17,8 @@ export default function AnimatedLink({
 }: AnimatedLinkProps) {
   const variants = {
     primary: "relative group rounded-full bg-black px-6 py-3 text-sm font-semibold text-white",
-    secondary: "relative group rounded-full border border-neutral-200 px-6 py-3 text-sm font-medium text-black",
-    ghost: "relative group text-sm text-muted",
+    secondary: "relative group rounded-full border border-gold/50 px-6 py-3 text-sm font-medium text-foreground",
+    ghost: "relative group text-sm text-foreground-secondary",
   };
 
   return (
@@ -54,7 +54,7 @@ export default function AnimatedLink({
 
         {variant === "ghost" && (
           <motion.div
-            className="absolute bottom-0 left-0 right-0 h-0.5 bg-black origin-left"
+            className="absolute bottom-0 left-0 right-0 h-0.5 bg-gold origin-left"
             initial={{ scaleX: 0 }}
             whileHover={{ scaleX: 1 }}
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}

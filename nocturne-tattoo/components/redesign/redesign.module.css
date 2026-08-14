@@ -1,6 +1,6 @@
 .theme {
   background: linear-gradient(180deg, #0a0908 0%, #0a0908 50%, #0a0908 100%);
-  color: #1a1815;
+  color: rgb(var(--foreground));
   position: relative;
   font-family: system-ui, -apple-system, sans-serif;
 }

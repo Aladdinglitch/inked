@@ -47,7 +47,7 @@ export function Navbar() {
           <span className="flex h-9 w-9 items-center justify-center rounded-full border border-gold/50 font-display text-base text-gold transition-colors group-hover:border-gold group-hover:bg-gold/10">
             IA
           </span>
-          <span className="font-display text-zinc-300 text-lg tracking-wide text-fg">
+          <span className="font-display text-lg tracking-wide text-foreground">
             Inked <span className="text-gold">Attraction</span>
           </span>
         </Link>
@@ -58,7 +58,7 @@ export function Navbar() {
               key={l.href}
               href={l.href}
               className={cn(
-                "text-sm tracking-wide text-muted transition-colors hover:text-fg",
+                "text-sm tracking-wide text-foreground-muted transition-colors hover:text-foreground",
                 pathname === l.href && "text-gold"
               )}
             >
@@ -75,7 +75,7 @@ export function Navbar() {
 
         <button
           onClick={() => setOpen((o) => !o)}
-          className="rounded-full p-2 text-fg lg:hidden"
+          className="rounded-full p-2 text-foreground lg:hidden"
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
@@ -98,7 +98,7 @@ export function Navbar() {
                   key={l.href}
                   href={l.href}
                   className={cn(
-                    "rounded-lg px-3 py-3 text-sm text-muted transition-colors hover:bg-ink hover:text-fg",
+                    "rounded-lg px-3 py-3 text-sm text-foreground-muted transition-colors hover:bg-ink hover:text-foreground",
                     pathname === l.href && "text-gold"
                   )}
                 >

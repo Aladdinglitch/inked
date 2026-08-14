@@ -29,13 +29,13 @@ export function CtaBanner({
       <div className="container relative py-24 sm:py-32">
         <FadeUp className="mx-auto max-w-2xl text-center">
           <p className="mb-4 font-mono text-xs uppercase tracking-widest text-gold">{eyebrow}</p>
-          <h2 className="font-display text-4xl leading-tight text-fg sm:text-5xl">{title}</h2>
-          <p className="mx-auto mt-5 max-w-lg text-muted">{description}</p>
+          <h2 className="font-display text-4xl leading-tight text-foreground sm:text-5xl">{title}</h2>
+          <p className="mx-auto mt-5 max-w-lg text-foreground-secondary">{description}</p>
           <div className="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Button asChild size="lg">
               <Link href={primaryHref}>{primaryLabel}</Link>
             </Button>
-            <Button asChild variant="outline" size="lg">
+            <Button asChild variant="outline" size="lg" className="text-foreground hover:text-foreground">
               <Link href={secondaryHref}>{secondaryLabel}</Link>
             </Button>
           </div>

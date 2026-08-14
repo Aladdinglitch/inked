@@ -59,7 +59,7 @@ export function Lightbox({
         >
           <button
             onClick={onClose}
-            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-border text-fg transition-colors hover:border-gold hover:text-gold"
+            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border border-gold/40 text-foreground transition-colors hover:border-gold hover:text-gold"
             aria-label="Close"
           >
             <X size={18} />
@@ -70,7 +70,7 @@ export function Lightbox({
               e.stopPropagation();
               onNavigate((activeIndex - 1 + pieces.length) % pieces.length);
             }}
-            className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border text-fg transition-colors hover:border-gold hover:text-gold sm:left-6"
+            className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 text-foreground transition-colors hover:border-gold hover:text-gold sm:left-6"
             aria-label="Previous piece"
           >
             <ChevronLeft size={18} />
@@ -80,7 +80,7 @@ export function Lightbox({
               e.stopPropagation();
               onNavigate((activeIndex + 1) % pieces.length);
             }}
-            className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-border text-fg transition-colors hover:border-gold hover:text-gold sm:right-6"
+            className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 text-foreground transition-colors hover:border-gold hover:text-gold sm:right-6"
             aria-label="Next piece"
           >
             <ChevronRight size={18} />
@@ -111,8 +111,8 @@ export function Lightbox({
             </div>
             <div className="mt-4 flex items-center justify-between">
               <div>
-                <h3 className="font-display text-xl text-fg">{piece.title}</h3>
-                <p className="text-sm text-muted">
+                <h3 className="font-display text-xl text-foreground">{piece.title}</h3>
+                <p className="text-sm text-foreground-secondary">
                   {artists.find((a) => a.slug === piece.artistSlug)?.name} &middot;{" "}
                   {styles.find((s) => s.slug === piece.styleSlug)?.name}
                 </p>
