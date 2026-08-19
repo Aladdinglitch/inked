@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { contactSchema, type ContactFormValues } from "@/lib/validators";
+import { submitNetlifyForm } from "@/lib/netlify-forms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,17 +23,14 @@ export function ContactForm() {
   const onSubmit = handleSubmit(async (data) => {
     setSubmitError("");
     try {
-      const response = await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          type: "contact",
-          website: data.website ?? "",
-          data: { type: "contact", name: data.name, email: data.email, phone: data.phone, subject: data.subject, message: data.message },
-        }),
+      await submitNetlifyForm("contact-inquiry", {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        subject: data.subject,
+        message: data.message,
+        "bot-field": data.website ?? "",
       });
-      const result = await response.json() as { error?: string };
-      if (!response.ok) throw new Error(result.error ?? "We couldn't send your inquiry right now.");
       toast.success("Inquiry received. We’ll reply soon.");
       reset();
     } catch (error) {
@@ -41,8 +39,9 @@ export function ContactForm() {
   });
 
   return (
-    <form onSubmit={onSubmit} className="relative space-y-5 rounded-3xl border border-border bg-card p-6 md:p-8">
-      <input {...register("website")} tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
+    <form name="contact-inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={onSubmit} className="relative space-y-5 rounded-3xl border border-border bg-card p-6 md:p-8">
+      <input type="hidden" name="form-name" value="contact-inquiry" />
+      <input {...register("website")} name="bot-field" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
       <div>
         <Label htmlFor="name">Name</Label>
         <Input id="name" className="mt-2" {...register("name")} />

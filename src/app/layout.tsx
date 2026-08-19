@@ -78,10 +78,33 @@ export default function RootLayout({
         <CustomCursor />
         <ScrollProgress />
         <Navbar />
+        <StaticNetlifyForms />
         <main className="flex-1">{children}</main>
         <Footer />
         <Toaster position="top-right" theme="dark" richColors />
       </body>
     </html>
+  );
+}
+
+function StaticNetlifyForms() {
+  return (
+    <div hidden aria-hidden="true">
+      <form name="tattoo-booking" data-netlify="true" data-netlify-honeypot="bot-field" method="POST">
+        <input type="hidden" name="form-name" value="tattoo-booking" />
+        <input name="bot-field" />
+        {["serviceType", "artist", "style", "placement", "size", "budget", "preferredDate", "alternateDate", "whatsapp", "name", "email", "phone", "notes", "referenceFiles"].map((name) => <input key={name} name={name} />)}
+      </form>
+      <form name="piercing-booking" data-netlify="true" data-netlify-honeypot="bot-field" method="POST">
+        <input type="hidden" name="form-name" value="piercing-booking" />
+        <input name="bot-field" />
+        {["serviceType", "piercingLocation", "locationDetail", "earDetail", "noseDetail", "navelDetail", "nippleDetail", "jewelry", "quantity", "firstPiercing", "previousDetails", "preferredDate", "preferredTime", "name", "email", "phone", "notes", "referenceFiles"].map((name) => <input key={name} name={name} />)}
+      </form>
+      <form name="contact-inquiry" data-netlify="true" data-netlify-honeypot="bot-field" method="POST">
+        <input type="hidden" name="form-name" value="contact-inquiry" />
+        <input name="bot-field" />
+        {["name", "email", "phone", "subject", "message"].map((name) => <input key={name} name={name} />)}
+      </form>
+    </div>
   );
 }

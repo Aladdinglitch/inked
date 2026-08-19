@@ -11,6 +11,7 @@ import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { InkArt } from "./ink-art";
 import { cn } from "@/lib/utils";
+import { submitNetlifyForm } from "@/lib/netlify-forms";
 
 type ServiceType = "tattoo" | "piercing";
 
@@ -91,6 +92,8 @@ export function BookingForm() {
   const [tattooForm, setTattooForm] = useState<TattooFormState>(tattooInitialState);
   const [piercingForm, setPiercingForm] = useState<PiercingFormState>(piercingInitialState);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [direction, setDirection] = useState(1);
 
   const steps = serviceType === "piercing" ? piercingSteps : tattooSteps;
@@ -146,15 +149,34 @@ export function BookingForm() {
 
   const go = (dir: 1 | -1) => {
     setDirection(dir);
-    if (dir === 1 && step === steps.length - 1) {
-      setSubmitted(true);
-      return;
-    }
     if (dir === -1 && step === 1) {
       setStep(0);
       return;
     }
     setStep((s) => Math.min(Math.max(s + dir, 0), steps.length - 1));
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!serviceType || !canAdvance || submitting) return;
+
+    setSubmitting(true);
+    setSubmitError("");
+    const formName = serviceType === "piercing" ? "piercing-booking" : "tattoo-booking";
+    const values = serviceType === "piercing" ? piercingForm : tattooForm;
+
+    try {
+      await submitNetlifyForm(formName, {
+        ...values,
+        files: "files" in values ? values.files.join(", ") : "",
+        "bot-field": "",
+      });
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Something went wrong while submitting your request. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const resetForm = () => {
@@ -163,6 +185,8 @@ export function BookingForm() {
     setPiercingForm(piercingInitialState);
     setStep(0);
     setSubmitted(false);
+    setSubmitting(false);
+    setSubmitError("");
   };
 
   if (submitted) {
@@ -219,7 +243,19 @@ export function BookingForm() {
   }
 
   return (
-    <div>
+    <form
+      name={serviceType === "piercing" ? "piercing-booking" : "tattoo-booking"}
+      method="POST"
+      data-netlify="true"
+      data-netlify-honeypot="bot-field"
+      onSubmit={handleSubmit}
+    >
+      <input type="hidden" name="form-name" value={serviceType === "piercing" ? "piercing-booking" : "tattoo-booking"} />
+      <HiddenBookingFields serviceType={serviceType} tattoo={tattooForm} piercing={piercingForm} />
+      <div className="sr-only" aria-hidden="true">
+        <label htmlFor="booking-bot-field">Do not fill this field</label>
+        <input id="booking-bot-field" name="bot-field" tabIndex={-1} autoComplete="off" />
+      </div>
       <div className="mb-10 flex items-center gap-1.5">
         {steps.map((label, i) => (
           <div key={label} className="flex flex-1 flex-col gap-2">
@@ -615,14 +651,15 @@ export function BookingForm() {
         </AnimatePresence>
       </div>
 
+      {submitError && <p role="alert" className="mt-6 text-sm text-oxblood-bright">{submitError}</p>}
       <div className="mt-10 flex items-center justify-between border-t border-border pt-6">
-        <Button variant="ghost" onClick={() => go(-1)} disabled={step === 0} size="sm">
+        <Button type="button" variant="ghost" onClick={() => go(-1)} disabled={step === 0 || submitting} size="sm">
           <ArrowLeft size={14} /> Back
         </Button>
-        <Button onClick={() => go(1)} disabled={!canAdvance} size="sm">
+        <Button type={step === steps.length - 1 ? "submit" : "button"} onClick={step === steps.length - 1 ? undefined : () => go(1)} disabled={!canAdvance || submitting} size="sm">
           {step === steps.length - 1 ? (
             <>
-              Submit Request <Check size={14} />
+              {submitting ? "Sending…" : "Submit Request"} <Check size={14} />
             </>
           ) : (
             <>
@@ -631,6 +668,25 @@ export function BookingForm() {
           )}
         </Button>
       </div>
+    </form>
+  );
+}
+
+function HiddenBookingFields({
+  serviceType,
+  tattoo,
+  piercing,
+}: {
+  serviceType: ServiceType | "";
+  tattoo: TattooFormState;
+  piercing: PiercingFormState;
+}) {
+  const values = serviceType === "piercing" ? piercing : tattoo;
+  return (
+    <div aria-hidden="true" className="hidden">
+      {Object.entries(values).map(([name, value]) => (
+        <input key={name} type="hidden" name={name} value={Array.isArray(value) ? value.join(", ") : value} />
+      ))}
     </div>
   );
 }

@@ -39,7 +39,6 @@ Cloudinary (Portfolio Images)
 
 Supabase (Future Backend)
 
-Resend (Emails)
 
 Calendly API or Custom Booking
 

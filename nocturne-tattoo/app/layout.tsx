@@ -59,8 +59,37 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <StaticNetlifyForms />
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
+  );
+}
+
+function StaticNetlifyForms() {
+  return (
+    <div hidden aria-hidden="true">
+      <form name="tattoo-booking" data-netlify="true" data-netlify-honeypot="bot-field" method="POST">
+        <input type="hidden" name="form-name" value="tattoo-booking" />
+        <input name="bot-field" />
+        {[
+          "serviceType", "artist", "style", "placement", "size", "budget", "preferredDate",
+          "timeOfDay", "notes", "files", "name", "email", "phone",
+        ].map((name) => <input key={name} name={name} />)}
+      </form>
+      <form name="piercing-booking" data-netlify="true" data-netlify-honeypot="bot-field" method="POST">
+        <input type="hidden" name="form-name" value="piercing-booking" />
+        <input name="bot-field" />
+        {[
+          "serviceType", "piercingLocation", "earPart", "earSide", "noseDetail", "navelDetail",
+          "nippleDetail", "locationDetail", "preferredDate", "timeOfDay", "notes", "name", "email", "phone",
+        ].map((name) => <input key={name} name={name} />)}
+      </form>
+      <form name="contact-inquiry" data-netlify="true" data-netlify-honeypot="bot-field" method="POST">
+        <input type="hidden" name="form-name" value="contact-inquiry" />
+        <input name="bot-field" />
+        {['name', 'email', 'phone', 'subject', 'message'].map((name) => <input key={name} name={name} />)}
+      </form>
+    </div>
   );
 }

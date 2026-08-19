@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { piercingLocations, jewelryOptions } from "@/content/piercings";
 import { piercingSchema, type PiercingFormValues } from "@/lib/validators";
+import { submitNetlifyForm } from "@/lib/netlify-forms";
 
 const steps = [
   "Piercing",
@@ -72,33 +73,27 @@ export function PiercingForm() {
   const onSubmit = form.handleSubmit(async (data) => {
     setSubmitError("");
     try {
-      const response = await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          type: "piercing",
-          website: data.website ?? "",
-          data: {
-            type: "piercing",
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            piercing: {
-              location: data.piercingLocation,
-              locationDetail: data.locationDetail,
-              jewelryPreference: data.jewelry === "Other" ? data.jewelryOther : data.jewelry,
-              quantity: data.quantity,
-              firstPiercing: data.firstPiercing === "Yes" ? true : data.firstPiercing === "No" ? false : undefined,
-              previousExperience: data.previousDetails,
-            },
-            appointment: { preferredDate: data.preferredDate, preferredTime: data.preferredTime },
-            message: data.notes,
-            context: { experienceAnswer: data.firstPiercing, referenceFiles: files.map((file) => file.name) },
-          },
-        }),
+      await submitNetlifyForm("piercing-booking", {
+        serviceType: data.serviceType,
+        piercingLocation: data.piercingLocation,
+        locationDetail: data.locationDetail,
+        earDetail: data.earDetail,
+        noseDetail: data.noseDetail,
+        navelDetail: data.navelDetail,
+        nippleDetail: data.nippleDetail,
+        jewelry: data.jewelry === "Other" ? data.jewelryOther : data.jewelry,
+        quantity: data.quantity,
+        firstPiercing: data.firstPiercing,
+        previousDetails: data.previousDetails,
+        preferredDate: data.preferredDate,
+        preferredTime: data.preferredTime,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        notes: data.notes,
+        referenceFiles: files.map((file) => file.name).join(", "),
+        "bot-field": data.website ?? "",
       });
-      const result = await response.json() as { message?: string };
-      if (!response.ok) throw new Error(result.message ?? "We could not send your request.");
       setSubmitted(true);
       toast.success("Piercing request submitted. We’ll follow up soon.");
     } catch (error) {
@@ -117,8 +112,9 @@ export function PiercingForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-3xl border border-border bg-card p-6 md:p-8">
-      <input {...register("website")} tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
+    <form name="piercing-booking" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={onSubmit} className="rounded-3xl border border-border bg-card p-6 md:p-8">
+      <input type="hidden" name="form-name" value="piercing-booking" />
+      <input {...register("website")} name="bot-field" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
       <div className="mb-6 flex flex-wrap gap-2">
         {steps.map((label, i) => (
           <span key={label} className={`rounded-full px-3 py-1 text-xs ${i === step ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>

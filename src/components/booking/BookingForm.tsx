@@ -9,6 +9,7 @@ import { artists } from "@/content/artists";
 import { styles } from "@/content/styles";
 import { tattooPlacements } from "@/content/piercings";
 import { bookingSchema, type BookingFormValues } from "@/lib/validators";
+import { submitNetlifyForm } from "@/lib/netlify-forms";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -72,33 +73,23 @@ export function BookingForm() {
   const onSubmit = form.handleSubmit(async (data) => {
     setSubmitError("");
     try {
-      const response = await fetch("/api/inquiry", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          type: "tattoo",
-          website: data.website ?? "",
-          data: {
-            type: "tattoo",
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            tattoo: {
-              placement: data.placement,
-              style: styles.find((style) => style.id === data.styleId)?.name ?? data.styleId,
-              size: data.size,
-              budget: data.budget,
-              description: data.notes,
-              referenceFiles: files.map((file) => file.name),
-            },
-            appointment: { preferredDate: data.preferredDate, alternateDate: data.alternateDate },
-            message: data.notes,
-            context: { artistId: data.artistId, whatsapp: data.whatsapp },
-          },
-        }),
+      await submitNetlifyForm("tattoo-booking", {
+        serviceType: data.serviceType,
+        artist: data.artistId,
+        style: styles.find((style) => style.id === data.styleId)?.name ?? data.styleId,
+        placement: data.placement,
+        size: data.size,
+        budget: data.budget,
+        preferredDate: data.preferredDate,
+        alternateDate: data.alternateDate,
+        whatsapp: data.whatsapp,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        notes: data.notes,
+        referenceFiles: files.map((file) => file.name).join(", "),
+        "bot-field": data.website ?? "",
       });
-      const result = await response.json() as { message?: string };
-      if (!response.ok) throw new Error(result.message ?? "We could not send your request.");
       setSubmitted(true);
       toast.success("Booking request sent. We’ll reply within two business days.");
     } catch (error) {
@@ -119,8 +110,9 @@ export function BookingForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="rounded-3xl border border-border bg-card p-6 md:p-8">
-      <input {...register("website")} tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
+    <form name="tattoo-booking" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={onSubmit} className="rounded-3xl border border-border bg-card p-6 md:p-8">
+      <input type="hidden" name="form-name" value="tattoo-booking" />
+      <input {...register("website")} name="bot-field" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
       <div className="mb-8 flex flex-wrap gap-2">
         {steps.map((label, i) => (
           <span
