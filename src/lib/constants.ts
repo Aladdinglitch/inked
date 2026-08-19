@@ -3,6 +3,9 @@ export const SITE = {
   tagline: "Crafted with precision. Inspired by you.",
   description:
     "Inked Attraction Tattoo & Piercing Studio is a bespoke tattoo and piercing studio led by Elizabeth Adedayo Towobola, offering custom tattoos, fine-line work, cover-ups, and professional piercings.",
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+    "http://localhost:3000",
   email: "Studio@InkedAttraction.com",
   phone: "+234 813 038-1326",
   address: "Lagos, Lagos State",
