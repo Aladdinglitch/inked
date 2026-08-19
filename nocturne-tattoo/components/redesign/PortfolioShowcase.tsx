@@ -1,136 +1,108 @@
 "use client";
-import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { gallery } from "@/lib/data";
 
-const sectionVariants = {
+import Image from "next/image";
+import Link from "next/link";
+import { motion, type Variants, useReducedMotion } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+
+import { gallery } from "@/lib/data";
+import { ease } from "@/lib/motion";
+
+const showcaseImages = [
+  "/images/fwc1.jpg",
+  "/images/fwc2.jpg",
+  "/images/fwc3.jpg",
+  "/images/fwc4.jpg",
+  "/images/fwc5.jpg",
+  "/images/fwc6.jpg",
+];
+
+const sectionVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.12, delayChildren: 0.15 },
+    transition: { staggerChildren: 0.1, delayChildren: 0.12 },
   },
 };
 
-const cardVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95 },
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 26 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.65, ease: ease.spring },
   },
 };
 
 export default function PortfolioShowcase() {
-  const recent = gallery.slice(0, 6);
   const shouldReduce = useReducedMotion();
-  
-  // Background images for each card
-  const backgroundImages = [
-    "/images/fwc1.jpg",
-    "/images/fwc2.jpg",
-    "/images/fwc3.jpg",
-    "/images/fwc4.jpg",
-    "/images/fwc5.jpg",
-    "/images/fwc6.jpg",
+  const cardDescriptions = [
+    "A quiet study in line, balance, and bloom.",
+    "Graphic contrast with a softer edge.",
+    "Delicate detail, held with intention.",
+    "Shape, shadow, and a little tension.",
+    "A personal mark with room to breathe.",
+    "Measured lines. Lasting presence.",
   ];
+  const cards = gallery.slice(0, 6).map((piece, index) => ({
+    ...piece,
+    image: showcaseImages[index],
+    number: String(index + 1).padStart(2, "0"),
+    description: cardDescriptions[index],
+  }));
 
   return (
-    <section className="relative py-32 lg:py-40 overflow-hidden">
-      {/* Premium animated background */}
-      <div className="absolute inset-0 -z-10">
-        <motion.div
-          className="absolute -right-1/4 top-0 w-[600px] h-[600px] rounded-full bg-gold/15 blur-3xl"
-          animate={shouldReduce ? undefined : {
-            y: [0, -60, 0],
-            x: [0, 50, 0],
-          }}
-          transition={{ duration: 12, ease: "easeInOut", repeat: Infinity }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-void via-void to-void/98" />
-      </div>
-
-      {/* Grain overlay */}
-      <div className="absolute inset-0 -z-10 opacity-20 mix-blend-overlay bg-grain pointer-events-none" />
+    <section className="relative overflow-hidden py-28 lg:py-40" aria-labelledby="portfolio-heading">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-void via-void to-void/95" />
+      <div className="pointer-events-none absolute -right-56 top-0 -z-10 h-[34rem] w-[34rem] rounded-full bg-gold/10 blur-[130px]" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-grain opacity-20 mix-blend-overlay" />
 
       <div className="container relative z-10">
-        {/* Premium header */}
         <motion.div
-          className="mb-24"
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        >
-          <motion.div
-            className="inline-block mb-8"
-            whileInView={{ scale: 1 }}
-            initial={{ scale: 0.8, opacity: 0 }}
-            transition={{ delay: 0.1, duration: 0.6 }}
-          >
-            <div className="group relative overflow-hidden rounded-full border border-gold/40 bg-gradient-to-r from-gold/15 to-gold/5 px-6 py-3 backdrop-blur-md">
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-gold/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                animate={shouldReduce ? undefined : { x: [-200, 200] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <span className="relative text-sm font-medium tracking-wide text-gold">
-                Portfolio & Gallery
-              </span>
-            </div>
-          </motion.div>
-
-          <h2 className="font-display text-5xl lg:text-7xl font-light text-foreground mb-8 tracking-tight">
-            Timeless <span className="italic text-gold">Art</span> on Skin
-          </h2>
-          <p className="max-w-3xl text-lg lg:text-xl text-foreground-secondary leading-relaxed font-light">
-            Explore our collection of custom tattoos and piercings. Each piece represents months of consultation, design refinement, and meticulous execution.
-          </p>
-        </motion.div>
-
-        {/* Gallery Grid */}
-        <motion.div
-          className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
           initial="hidden"
           whileInView="visible"
-          variants={sectionVariants}
           viewport={{ once: true, amount: 0.2 }}
+          variants={sectionVariants}
+          className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end lg:gap-20"
         >
-          {recent.map((p, idx) => (
-            <PortfolioCard
-              key={p.id}
-              backgroundImage={backgroundImages[idx]}
-              title={p.title}
-              style={p.styleSlug}
-              variants={cardVariants}
-              shouldReduce={shouldReduce}
-            />
+          <motion.div variants={cardVariants}>
+            <p className="flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.28em] text-gold sm:text-xs">
+              <span className="h-px w-8 bg-gold" /> Portfolio &amp; gallery
+            </p>
+            <h2 id="portfolio-heading" className="mt-6 max-w-xl font-display text-5xl leading-[0.92] tracking-[-0.045em] text-foreground sm:text-6xl lg:text-7xl">
+              Timeless <span className="italic text-gold">art</span> on skin.
+            </h2>
+          </motion.div>
+          <motion.p variants={cardVariants} className="max-w-xl text-base leading-relaxed text-foreground-secondary sm:text-lg">
+            A considered collection of custom tattoos and precision work. Every piece begins with conversation and ends with a mark that feels entirely its own.
+          </motion.p>
+        </motion.div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.1 }}
+          variants={sectionVariants}
+          className="mt-14 grid gap-4 sm:grid-cols-2 lg:mt-24 lg:grid-cols-6"
+        >
+          {cards.map((card, index) => (
+            <PortfolioCard key={card.id} card={card} index={index} shouldReduce={shouldReduce} />
           ))}
         </motion.div>
 
-        {/* View All Link */}
         <motion.div
-          className="mt-20 text-center"
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4, duration: 0.8 }}
+          transition={{ delay: 0.25, duration: 0.65, ease: ease.spring }}
+          className="mt-14 flex justify-center lg:mt-20"
         >
-          <Link href="/gallery">
-            <motion.div
-              className="inline-flex items-center gap-3 px-8 py-4 rounded-xl border border-gold/40 text-gold bg-gold/5 backdrop-blur-md hover:border-gold/80 hover:bg-gold/15 transition-all duration-500 font-light"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              <span>Explore Full Portfolio</span>
-              <motion.div
-                animate={shouldReduce ? undefined : { x: [0, 6, 0] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              >
-                <ArrowRight size={18} />
-              </motion.div>
-            </motion.div>
+          <Link
+            href="/gallery"
+            className="group inline-flex items-center gap-4 rounded-full border border-gold/40 bg-gold/[0.05] px-6 py-3.5 text-sm font-medium text-gold backdrop-blur-md transition duration-500 hover:-translate-y-1 hover:border-gold hover:bg-gold/[0.12] hover:shadow-[0_12px_40px_rgba(212,175,87,0.14)] focus-visible:outline-offset-4"
+          >
+            <span>Explore full portfolio</span>
+            <ArrowRight size={16} className="transition-transform duration-500 group-hover:translate-x-1" />
           </Link>
         </motion.div>
       </div>
@@ -138,81 +110,64 @@ export default function PortfolioShowcase() {
   );
 }
 
+type PortfolioCardData = (typeof gallery)[number] & {
+  image: string;
+  number: string;
+  description: string;
+};
+
 function PortfolioCard({
-  backgroundImage,
-  title,
-  style,
-  variants,
+  card,
+  index,
   shouldReduce,
 }: {
-  backgroundImage: string;
-  title: string;
-  style: string;
-  variants: any;
+  card: PortfolioCardData;
+  index: number;
   shouldReduce: boolean | null;
 }) {
+  const styleLabel = card.styleSlug.replace(/-/g, " ");
+  const isLead = index === 0;
+
   return (
-    <motion.div
-      variants={variants}
-      className="group flex flex-col"
+    <motion.article
+      variants={cardVariants}
+      whileHover={shouldReduce ? undefined : { y: -7 }}
+      transition={{ duration: 0.45, ease: ease.spring }}
+      className={`group relative overflow-hidden rounded-2xl border border-gold/20 bg-ink shadow-[0_18px_60px_rgba(0,0,0,0.18)] transition-[border-color,box-shadow] duration-500 hover:border-gold/50 hover:shadow-[0_28px_90px_rgba(0,0,0,0.34)] ${isLead ? "sm:col-span-2 lg:col-span-3" : "lg:col-span-1"}`}
     >
-      {/* Glass background container */}
-      <div className="absolute -inset-0.5 bg-gradient-to-br from-gold/30 to-gold/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur -z-10" />
-
-      <motion.div
-        className="relative aspect-[3/4] w-full overflow-hidden rounded-3xl border border-gold/20 bg-gradient-to-br from-gold/10 to-gold/5 backdrop-blur-xl"
-        whileHover={{
-          boxShadow: "0 60px 120px rgba(212, 175, 87, 0.25)",
-          y: -12,
-          borderColor: "rgba(212, 175, 87, 0.5)",
-        }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <motion.img
-          src={backgroundImage}
-          alt={title}
-          width={600}
-          height={800}
-          className="w-full h-full object-cover"
-          loading="lazy"
-          whileHover={{ scale: 1.1 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      <div className={`relative ${isLead ? "aspect-[4/3] sm:aspect-[16/8]" : "aspect-[4/5]"}`}>
+        <Image
+          src={card.image}
+          alt={`${card.title}, portfolio work`}
+          fill
+          sizes={isLead ? "(max-width: 1024px) 100vw, 50vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"}
+          className="object-cover grayscale-[18%] transition duration-1000 ease-out group-hover:scale-105 group-hover:grayscale-0"
         />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,9,8,0.08)_0%,rgba(10,9,8,0.18)_36%,rgba(10,9,8,0.96)_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(212,175,87,0.2),transparent_28%)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-void/95 via-ink/55 to-transparent" />
+        <div className="absolute inset-x-5 top-5 flex items-start justify-between sm:inset-x-6 sm:top-6">
+          <span className="font-mono text-[10px] tracking-[0.25em] text-white/60">{card.number}</span>
+          <span className="grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-black/20 text-gold opacity-70 backdrop-blur-md transition duration-500 group-hover:border-gold/70 group-hover:bg-gold group-hover:text-void group-hover:opacity-100">
+            <ArrowUpRight size={15} className="transition-transform duration-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </span>
+        </div>
 
-        {/* Content overlay */}
-        <motion.div
-          className="absolute inset-0 flex flex-col justify-end p-8 bg-gradient-to-t from-ink via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        >
-          <p className="text-xs uppercase tracking-widest text-foreground-accent mb-3">Featured Work</p>
-          <h3 className="font-display text-2xl text-white mb-2">{title}</h3>
-          <p className="text-sm text-foreground-secondary capitalize">{style.replace("-", " ")}</p>
-        </motion.div>
-
-        {/* Floating accent */}
-        <motion.div
-          className="absolute -top-12 -right-12 h-32 w-32 rounded-full bg-gold/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-          animate={shouldReduce ? undefined : { scale: [1, 1.3, 1] }}
-          transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
-        />
-      </motion.div>
-
-      {/* Info below image */}
-      <motion.div
-        className="mt-6 relative z-10"
-        initial={{ opacity: 0.6 }}
-        whileHover={{ opacity: 1 }}
-        transition={{ duration: 0.3 }}
-      >
-        <p className="font-light text-lg text-foreground group-hover:text-gold transition-colors duration-300">
-          {title}
-        </p>
-        <p className="text-sm text-foreground-muted mt-2 capitalize">
-          {style.replace("-", " ")}
-        </p>
-      </motion.div>
-    </motion.div>
+        <div className="absolute inset-x-5 bottom-5 sm:inset-x-6 sm:bottom-6">
+          <div className="mb-4 h-px w-9 bg-gold transition-all duration-500 group-hover:w-16" />
+          <p className="font-mono text-[9px] uppercase tracking-[0.24em] text-gold">Featured work</p>
+          <h3 className={`mt-2 font-display leading-none tracking-[-0.025em] text-foreground transition-colors duration-500 group-hover:text-gold ${isLead ? "text-3xl sm:text-4xl" : "text-2xl"}`}>
+            {card.title}
+          </h3>
+          <p className={`mt-3 max-w-[28ch] text-sm leading-relaxed text-foreground-secondary ${isLead ? "sm:text-base" : ""}`}>
+            {card.description}
+          </p>
+          <div className="mt-4 flex items-center gap-2 font-mono text-[9px] uppercase tracking-[0.22em] text-white/55">
+            <span className="h-px w-4 bg-gold/70" />
+            <span>{styleLabel}</span>
+          </div>
+        </div>
+      </div>
+    </motion.article>
   );
 }
