@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { NAV_LINKS } from "@/lib/constants";
+import { NAV_LINKS, SITE } from "@/lib/constants";
 import { SocialLinks } from "@/components/ui/social-links";
 import { Logo } from "@/components/brand/Logo";
 
@@ -62,12 +62,12 @@ export function Footer() {
           <div>
             <p className="eyebrow mb-5">Visit the studio</p>
             <p className="text-sm leading-6 text-muted-foreground">
-              412 Mercer Avenue, Suite 2
+              {SITE.address}
               <br />
-              Port Vale
+              {SITE.city}
             </p>
-            <p className="mt-4 text-sm text-muted-foreground">book@inkattraction.studio</p>
-            <p className="mt-1 text-sm text-muted-foreground">+1 (555) 014-2280</p>
+            <a className="mt-4 block text-sm text-muted-foreground transition-colors hover:text-primary" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+            <a className="mt-1 block text-sm text-muted-foreground transition-colors hover:text-primary" href={`tel:${SITE.phone.replace(/\s/g, "")}`}>{SITE.phone}</a>
           </div>
         </div>
       </div>

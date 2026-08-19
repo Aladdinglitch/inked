@@ -1,8 +1,8 @@
 const easing = {
-  smooth: [0.25, 0.46, 0.45, 0.94],
-  spring: [0.22, 1, 0.36, 1],
-  expo: [0.16, 1, 0.3, 1],
-  back: [0.68, -0.55, 0.265, 1.55],
+  smooth: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+  spring: [0.22, 1, 0.36, 1] as [number, number, number, number],
+  expo: [0.16, 1, 0.3, 1] as [number, number, number, number],
+  back: [0.68, -0.55, 0.265, 1.55] as [number, number, number, number],
 };
 
 export const fadeUp = {

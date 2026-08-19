@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { FadeUp } from "@/components/motion/FadeUp";
 
-const stats = [
-  { label: "Years in studio", value: 12 },
-  { label: "Resident artists", value: 5 },
-  { label: "Custom sessions", value: 2400, suffix: "+" },
-  { label: "Average rating", value: 4.9, suffix: "/5" },
+const stats: { label: string; value: number; suffix?: string }[] = [
+  { label: "Years of focused practice", value: 3 },
+  { label: "Founder-led studio", value: 1 },
+  { label: "Bespoke consultation", value: 1 },
+  { label: "Client-first care", value: 1 },
 ];
 
 function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
@@ -99,9 +99,7 @@ export function Stats() {
                     "0 0 0 20px rgba(212, 175, 55, 0)",
                   ],
                 }}
-                transitionEnd={{
-                  boxShadow: "0 0 0 0 rgba(212, 175, 55, 0)",
-                }}
+
               />
             </motion.div>
 

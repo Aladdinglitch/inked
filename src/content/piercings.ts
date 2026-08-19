@@ -11,7 +11,7 @@ export const tattooPlacements = [
   "Hand",
   "Neck",
   "Full Sleeve",
-];
+] as const;
 
 export const piercingLocations = [
   "Nose",
@@ -22,7 +22,7 @@ export const piercingLocations = [
   "Nipple",
   "Chin",
   "Eyebrow",
-];
+] as const;
 
 export const jewelryOptions = [
   "Stud",

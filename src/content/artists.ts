@@ -19,7 +19,7 @@ export const artists: Artist[] = [
     bio: "Elizabeth is the owner, founder, and lead artist of Inked Attraction. Her work blends custom design, fine-line detail, cover-ups, and professional piercing care into a calm, highly personal studio experience.",
     specialties: ["Custom Tattoos", "Fine Line", "Cover-ups", "Piercings"],
     years: 3,
-    image: "/images/artist1.jpg",
+    image: "/images/artist-1.svg",
     featured: true,
   },
 ];

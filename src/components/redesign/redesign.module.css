@@ -1,25 +1,25 @@
 .theme {
-  background: linear-gradient(180deg, #FCFAF7 0%, #FFF7ED 100%);
-  color: #111827;
+  background: transparent;
+  color: var(--foreground);
 }
 
 .marquee {
   display: block;
-  white-space: nowrap;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .marqueeInner {
   display: inline-block;
   padding-left: 100%;
-  animation: marquee 18s linear infinite;
+  animation: marquee 24s linear infinite;
 }
 
 @keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-50%); }
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .marqueeInner { animation: none; }
+  .marqueeInner { animation: none; padding-left: 0; }
 }

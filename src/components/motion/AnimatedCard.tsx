@@ -54,7 +54,7 @@ export function AnimatedCard({
         onMouseMove={handleMouseMove}
         onMouseEnter={() => hoverable && setIsHovering(true)}
         onMouseLeave={() => {
-          hoverable && setIsHovering(false);
+          if (hoverable) setIsHovering(false);
           setMousePosition({ x: 0, y: 0 });
         }}
         transition={{

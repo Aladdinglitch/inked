@@ -55,7 +55,7 @@ export default async function ArtistProfilePage({ params }: Props) {
             ))}
           </div>
           <Button asChild className="mt-8" size="lg">
-            <Link href={`/booking?artist=${artist.id}`}>Book with {artist.name.split(" ")[0]}</Link>
+            <Link href={`/booking/tattoo?artist=${artist.id}`}>Book with {artist.name.split(" ")[0]}</Link>
           </Button>
         </FadeUp>
       </div>

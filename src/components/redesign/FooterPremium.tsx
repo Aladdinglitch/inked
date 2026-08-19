@@ -15,7 +15,7 @@ export default function FooterPremium() {
           <ul className="mt-4 space-y-2 text-sm text-muted">
             <li><Link href="/about">About</Link></li>
             <li><Link href="/artists">Artists</Link></li>
-            <li><Link href="/gallery">Portfolio</Link></li>
+            <li><Link href="/portfolio">Portfolio</Link></li>
           </ul>
         </div>
 

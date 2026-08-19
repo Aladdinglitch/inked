@@ -4,7 +4,7 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 export default function MagneticButton({ href, children }: { href: string; children: React.ReactNode }) {
-  const ref = useRef<HTMLAnchorElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const scale = useTransform(x, [-20, 20], [0.98, 1.02]);

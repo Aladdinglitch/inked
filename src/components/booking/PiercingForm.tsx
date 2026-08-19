@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -25,6 +25,8 @@ export function PiercingForm() {
   const [step, setStep] = useState(0);
   const [files, setFiles] = useState<File[]>([]);
   const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const minimumDate = new Date().toISOString().split("T")[0];
 
   const form = useForm<PiercingFormValues>({
     resolver: zodResolver(piercingSchema),
@@ -39,7 +41,7 @@ export function PiercingForm() {
       jewelry: "",
       jewelryOther: "",
       quantity: "1",
-      firstPiercing: "",
+
       previousDetails: "",
       preferredDate: "",
       preferredTime: "",
@@ -50,8 +52,8 @@ export function PiercingForm() {
     },
   });
 
-  const { register, watch, setValue, trigger, formState: { errors } } = form;
-  const values = watch();
+  const { register, control, setValue, trigger, formState: { errors, isSubmitting } } = form;
+  const values = useWatch({ control });
 
   const next = async () => {
     const fieldsByStep: (keyof PiercingFormValues)[][] = [
@@ -67,14 +69,46 @@ export function PiercingForm() {
     if (ok) setStep((s) => Math.min(s + 1, steps.length - 1));
   };
 
-  const onSubmit = form.handleSubmit(() => {
-    setSubmitted(true);
-    toast.success("Piercing request submitted. We'll follow up soon.");
+  const onSubmit = form.handleSubmit(async (data) => {
+    setSubmitError("");
+    try {
+      const response = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          type: "piercing",
+          website: data.website ?? "",
+          data: {
+            type: "piercing",
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            piercing: {
+              location: data.piercingLocation,
+              locationDetail: data.locationDetail,
+              jewelryPreference: data.jewelry === "Other" ? data.jewelryOther : data.jewelry,
+              quantity: data.quantity,
+              firstPiercing: data.firstPiercing === "Yes" ? true : data.firstPiercing === "No" ? false : undefined,
+              previousExperience: data.previousDetails,
+            },
+            appointment: { preferredDate: data.preferredDate, preferredTime: data.preferredTime },
+            message: data.notes,
+            context: { experienceAnswer: data.firstPiercing, referenceFiles: files.map((file) => file.name) },
+          },
+        }),
+      });
+      const result = await response.json() as { message?: string };
+      if (!response.ok) throw new Error(result.message ?? "We could not send your request.");
+      setSubmitted(true);
+      toast.success("Piercing request submitted. We’ll follow up soon.");
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "We could not send your request. Please try again.");
+    }
   });
 
   if (submitted) {
     return (
-      <div className="rounded-3xl border border-border bg-card p-10 text-center">
+      <div className="rounded-3xl border border-border bg-card p-10 text-center" aria-live="polite">
         <p className="eyebrow mb-2">Success</p>
         <h2 className="display text-3xl text-foreground">Request received</h2>
         <p className="mt-4 text-muted-foreground">Thanks, {values.name}. We&apos;ll contact you at {values.email} to confirm availability.</p>
@@ -84,6 +118,7 @@ export function PiercingForm() {
 
   return (
     <form onSubmit={onSubmit} className="rounded-3xl border border-border bg-card p-6 md:p-8">
+      <input {...register("website")} tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
       <div className="mb-6 flex flex-wrap gap-2">
         {steps.map((label, i) => (
           <span key={label} className={`rounded-full px-3 py-1 text-xs ${i === step ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
@@ -100,19 +135,14 @@ export function PiercingForm() {
               <button
                 key={p}
                 type="button"
+                aria-pressed={values.piercingLocation === p}
                 onClick={() => setValue("piercingLocation", p, { shouldValidate: true })}
                 className={`rounded-2xl border px-4 py-3 text-sm font-medium transition-all hover:border-primary/60 hover:bg-muted/50 ${values.piercingLocation === p ? "border-primary bg-primary/10 text-primary" : "border-border"}`}
               >
                 {p}
               </button>
             ))}
-            <button
-              type="button"
-              onClick={() => setValue("piercingLocation", "Other", { shouldValidate: true })}
-              className={`rounded-2xl border px-4 py-3 text-sm font-medium transition-all hover:border-primary/60 hover:bg-muted/50 ${values.piercingLocation === "Other" ? "border-primary bg-primary/10 text-primary" : "border-border"}`}
-            >
-              Other
-            </button>
+
           </div>
           {values.piercingLocation && (
             <div className="space-y-3 rounded-2xl border border-border bg-muted/30 p-4">
@@ -143,12 +173,7 @@ export function PiercingForm() {
                   )}
                 </div>
               )}
-              {values.piercingLocation === "Other" && (
-                <div>
-                  <Label>Please specify the other location</Label>
-                  <Input className="mt-2" placeholder="Tell us where you'd like to be pierced" {...register("locationDetail")} />
-                </div>
-              )}
+
               {values.piercingLocation === "Navel" && (
                 <div>
                   <Label>Navel type</Label>
@@ -161,6 +186,7 @@ export function PiercingForm() {
                   </div>
                 </div>
               )}
+
               {values.piercingLocation === "XXX-Section" && (
                 <div>
                   <Label>Preferred area</Label>
@@ -199,7 +225,8 @@ export function PiercingForm() {
               <button
                 key={j}
                 type="button"
-                onClick={() => setValue("jewelry", j)}
+                aria-pressed={values.jewelry === j}
+                onClick={() => setValue("jewelry", j, { shouldValidate: true })}
                 className={`rounded-full border px-4 py-2 text-xs ${values.jewelry === j ? "border-primary text-primary" : "border-border"}`}
               >
                 {j}
@@ -207,7 +234,8 @@ export function PiercingForm() {
             ))}
             <button
               type="button"
-              onClick={() => setValue("jewelry", "Other")}
+              aria-pressed={values.jewelry === "Other"}
+              onClick={() => setValue("jewelry", "Other", { shouldValidate: true })}
               className={`rounded-full border px-4 py-2 text-xs ${values.jewelry === "Other" ? "border-primary text-primary" : "border-border"}`}
             >
               Other
@@ -236,7 +264,8 @@ export function PiercingForm() {
               <button
                 key={q}
                 type="button"
-                onClick={() => setValue("quantity", q)}
+                aria-pressed={values.quantity === q}
+                onClick={() => setValue("quantity", q, { shouldValidate: true })}
                 className={`rounded-full border px-4 py-2 text-xs ${values.quantity === q ? "border-primary text-primary" : "border-border"}`}
               >
                 {q}
@@ -250,12 +279,13 @@ export function PiercingForm() {
         <div className="space-y-4">
           <Label>Is this your first piercing?</Label>
           <div className="mt-2 flex gap-2">
-            {['Yes', 'No', 'Not sure'].map((v) => (
-              <button key={v} type="button" onClick={() => setValue('firstPiercing', v)} className={`rounded-full border px-4 py-2 text-xs ${values.firstPiercing === v ? 'border-primary text-primary' : 'border-border'}`}>
+            {(['Yes', 'No', 'Not sure'] as const).map((v) => (
+              <button key={v} type="button" aria-pressed={values.firstPiercing === v} onClick={() => setValue('firstPiercing', v, { shouldValidate: true })} className={`rounded-full border px-4 py-2 text-xs ${values.firstPiercing === v ? 'border-primary text-primary' : 'border-border'}`}>
                 {v}
               </button>
             ))}
           </div>
+          {errors.firstPiercing ? <p className="mt-1 text-xs text-secondary">{errors.firstPiercing.message}</p> : null}
           {values.firstPiercing === 'No' && (
             <div>
               <Label htmlFor="previousDetails">What piercings do you currently have?</Label>
@@ -270,7 +300,7 @@ export function PiercingForm() {
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label htmlFor="preferredDate">Preferred date</Label>
-              <Input id="preferredDate" type="date" className="mt-2" {...register("preferredDate")} />
+              <Input id="preferredDate" type="date" min={minimumDate} className="mt-2" {...register("preferredDate")} />
               {errors.preferredDate ? <p className="mt-1 text-xs text-secondary">{errors.preferredDate.message}</p> : null}
             </div>
             <div>
@@ -295,7 +325,7 @@ export function PiercingForm() {
           </div>
           <div>
             <Label htmlFor="phone">Phone</Label>
-            <Input id="phone" className="mt-2" {...register("phone")} />
+            <Input id="phone" type="tel" autoComplete="tel" className="mt-2" {...register("phone")} />
             {errors.phone ? <p className="mt-1 text-xs text-secondary">{errors.phone.message}</p> : null}
           </div>
           <div>
@@ -313,7 +343,7 @@ export function PiercingForm() {
             {files.length > 0 && (
               <ul className="mt-2 text-sm text-muted-foreground">
                 {files.map((f) => (
-                  <li key={f.name} className="flex items-center justify-between">
+                  <li key={`${f.name}-${f.lastModified}`} className="flex items-center justify-between">
                     <span>{f.name}</span>
                     <button type="button" onClick={() => setFiles((fs) => fs.filter((x) => x !== f))} className="text-xs text-secondary">Remove</button>
                   </li>
@@ -341,17 +371,19 @@ export function PiercingForm() {
         </div>
       )}
 
+      {submitError ? <p className="mt-5 flex items-center justify-between gap-4 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-foreground" role="alert" aria-live="assertive"><span>{submitError}</span><button type="button" className="shrink-0 font-semibold text-primary underline-offset-4 hover:underline" onClick={() => void onSubmit()}>Retry</button></p> : null}
+
       <div className="mt-6 flex justify-between">
         <div>
           {step > 0 && (
-            <Button variant="ghost" onClick={() => setStep((s) => Math.max(s - 1, 0))}>Back</Button>
+            <Button type="button" variant="ghost" onClick={() => setStep((s) => Math.max(s - 1, 0))}>Back</Button>
           )}
         </div>
         <div>
           {step < steps.length - 1 ? (
-            <Button onClick={next}>Next</Button>
+            <Button type="button" onClick={next}>Next</Button>
           ) : (
-            <Button type="submit">Submit request</Button>
+            <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Sending…" : "Submit request"}</Button>
           )}
         </div>
       </div>

@@ -1,45 +1,42 @@
 "use client";
+
+import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
 import { gallery } from "@/lib/data";
 
 export default function PortfolioShowcase() {
-  const recent = gallery.slice(0, 6);
+  const shouldReduceMotion = useReducedMotion();
+  const selectedWork = gallery.slice(0, 6);
 
   return (
-    <section className="py-20">
-      <div className="container">
-        <div className="mb-8 flex items-center justify-between">
+    <section className="border-y border-white/8 bg-surface/50 py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mb-10 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-wider text-muted">Selected Work</p>
-            <h2 className="mt-2 font-display text-3xl">Timeless body art, made to last.</h2>
+            <p className="eyebrow">Selected work</p>
+            <h2 className="display mt-3 text-4xl leading-none text-foreground sm:text-5xl">Made to be personal.</h2>
           </div>
-          <Link href="/gallery" className="text-sm font-medium text-muted">Explore the portfolio →</Link>
+          <Link href="/portfolio" className="group inline-flex items-center gap-2 text-sm font-semibold text-foreground-secondary transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            View the portfolio <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+          </Link>
         </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          {recent.map((p, i) => (
-            <motion.a
-              key={p.id}
-              href="/gallery"
-              className="group block overflow-hidden rounded-2xl"
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.06 }}
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4">
+          {selectedWork.map((piece, index) => (
+            <motion.div
+              key={piece.id}
+              initial={shouldReduceMotion ? undefined : { opacity: 0, y: 18 }}
+              whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: index * 0.06, ease: "easeOut" }}
             >
-              <div className="aspect-[4/5] w-full overflow-hidden rounded-2xl">
-                <img
-                  src={p.image || `/images/folio-${(i % 8) + 1}.svg`}
-                  alt={p.title || "Portfolio piece"}
-                  width={800}
-                  height={1000}
-                  className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                  loading="lazy"
-                />
-              </div>
-              <div className="mt-3 text-sm text-muted">{p.title}</div>
-            </motion.a>
+              <Link href="/portfolio" className="group relative block aspect-[4/5] overflow-hidden rounded-2xl border border-white/10 bg-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                <Image src={`/images/folio-${index + 1}.svg`} alt={`${piece.title}, tattoo portfolio study`} fill sizes="(max-width: 768px) 50vw, 33vw" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-80 transition-opacity group-hover:opacity-100" />
+                <p className="absolute inset-x-4 bottom-4 text-sm font-medium text-foreground">{piece.title}</p>
+              </Link>
+            </motion.div>
           ))}
         </div>
       </div>

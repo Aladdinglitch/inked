@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type HTMLMotionProps } from "framer-motion";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 
@@ -10,17 +10,15 @@ interface Ripple {
   y: number;
 }
 
-interface InteractiveButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+type InteractiveButtonProps = HTMLMotionProps<"button"> & {
   children: React.ReactNode;
-  variant?: "default" | "outline" | "ghost";
   ripple?: boolean;
-}
+};
 
 export function InteractiveButton({
   children,
   className,
-  variant = "default",
+
   ripple = true,
   onMouseDown,
   ...props

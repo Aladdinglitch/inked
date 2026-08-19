@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
-import { NAV_LINKS, SITE } from "@/lib/constants";
+import { NAV_LINKS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/brand/Logo";
@@ -22,15 +22,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 border-b border-transparent transition-all duration-500",
-        scrolled ? "glass border-white/10" : "bg-transparent",
+        "sticky top-0 z-50 border-b border-transparent transition-all duration-300",
+        scrolled ? "glass border-white/10" : "bg-background/65 backdrop-blur-sm",
       )}
     >
       <div className="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-4 md:h-[5.25rem] md:px-6">
@@ -63,7 +61,7 @@ export function Navbar() {
           </Button>
           <button
             type="button"
-            className="rounded-full p-2 text-foreground lg:hidden"
+            className="rounded-full p-3 text-foreground transition-colors hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary lg:hidden"
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
@@ -80,6 +78,7 @@ export function Navbar() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  onClick={() => setOpen(false)}
                   className={cn(
                     "block py-2 text-sm",
                     pathname.startsWith(link.href) ? "text-primary" : "text-foreground",
@@ -91,7 +90,7 @@ export function Navbar() {
             ))}
             <li>
               <Button asChild className="mt-2 w-full">
-                <Link href="/booking">Book now</Link>
+                <Link href="/booking" onClick={() => setOpen(false)}>Book now</Link>
               </Button>
             </li>
           </ul>

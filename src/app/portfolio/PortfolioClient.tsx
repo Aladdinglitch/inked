@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import type { PortfolioItem } from "@/content/portfolio";
 import { cn } from "@/lib/utils";
 
-const categories = ["all", "blackwork", "fine-line", "traditional", "realism", "custom", "piercings"] as const;
+const categories = ["all", "fine-line", "traditional", "realism", "custom", "piercings"] as const;
 const PAGE_SIZE = 9;
 
 export default function PortfolioClient() {

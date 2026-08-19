@@ -12,7 +12,7 @@ export const styles: Style[] = [
     slug: "custom-tattoos",
     name: "Custom Tattoos",
     summary: "One-of-one designs tailored to your story, placement, and long-term impact.",
-    image: "/images/style-blackwork.svg",
+    image: "/images/style-custom.svg",
   },
   {
     id: "s2",
@@ -47,6 +47,6 @@ export const styles: Style[] = [
     slug: "piercings",
     name: "Piercings",
     summary: "Precision piercings with curated jewelry and attentive aftercare guidance.",
-    image: "/images/style-piercings.svg",
+    image: "/images/folio-2.svg",
   },
 ];

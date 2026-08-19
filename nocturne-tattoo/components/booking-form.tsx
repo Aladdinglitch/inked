@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, ImagePlus, X, CheckCircle2 } from "lucide-react";
-import { artists, styles, placements, sizeOptions, budgetRanges } from "@/lib/data";
+import { artists, styles, tattooPlacements, piercingLocations, sizeOptions, budgetRanges } from "@/lib/data";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
@@ -12,7 +12,10 @@ import { Label } from "./ui/label";
 import { InkArt } from "./ink-art";
 import { cn } from "@/lib/utils";
 
-type FormState = {
+type ServiceType = "tattoo" | "piercing";
+
+type TattooFormState = {
+  serviceType: "tattoo";
   artist: string;
   style: string;
   placement: string;
@@ -27,7 +30,25 @@ type FormState = {
   phone: string;
 };
 
-const initialState: FormState = {
+type PiercingFormState = {
+  serviceType: "piercing";
+  piercingLocation: string;
+  earPart: string;
+  earSide: string;
+  noseDetail: string;
+  navelDetail: string;
+  nippleDetail: string;
+  locationDetail: string;
+  preferredDate: string;
+  timeOfDay: string;
+  notes: string;
+  name: string;
+  email: string;
+  phone: string;
+};
+
+const tattooInitialState: TattooFormState = {
+  serviceType: "tattoo",
   artist: "",
   style: "",
   placement: "",
@@ -42,48 +63,86 @@ const initialState: FormState = {
   phone: "",
 };
 
-const steps = [
-  "Artist",
-  "Style",
-  "Placement",
-  "Size",
-  "Budget",
-  "Dates",
-  "References",
-  "Contact",
-];
+const piercingInitialState: PiercingFormState = {
+  serviceType: "piercing",
+  piercingLocation: "",
+  earPart: "",
+  earSide: "",
+  noseDetail: "",
+  navelDetail: "",
+  nippleDetail: "",
+  locationDetail: "",
+  preferredDate: "",
+  timeOfDay: "",
+  notes: "",
+  name: "",
+  email: "",
+  phone: "",
+};
+
+const tattooSteps = ["Service", "Artist", "Style", "Placement", "Size", "Budget", "Dates", "References", "Contact"];
+const piercingSteps = ["Service", "Location", "Dates", "Contact"];
+
+const PIERCING_FOLLOW_UP_LOCATIONS = ["Ear", "Nose", "Navel", "XXX-Section", "Nipple"] as const;
 
 export function BookingForm() {
+  const [serviceType, setServiceType] = useState<ServiceType | "">("");
   const [step, setStep] = useState(0);
-  const [form, setForm] = useState<FormState>(initialState);
+  const [tattooForm, setTattooForm] = useState<TattooFormState>(tattooInitialState);
+  const [piercingForm, setPiercingForm] = useState<PiercingFormState>(piercingInitialState);
   const [submitted, setSubmitted] = useState(false);
   const [direction, setDirection] = useState(1);
 
-  const update = <K extends keyof FormState>(key: K, value: FormState[K]) =>
-    setForm((f) => ({ ...f, [key]: value }));
+  const steps = serviceType === "piercing" ? piercingSteps : tattooSteps;
+
+  const updateTattoo = <K extends keyof TattooFormState>(key: K, value: TattooFormState[K]) =>
+    setTattooForm((f) => ({ ...f, [key]: value }));
+
+  const updatePiercing = <K extends keyof PiercingFormState>(key: K, value: PiercingFormState[K]) =>
+    setPiercingForm((f) => ({ ...f, [key]: value }));
+
+  const selectService = (type: ServiceType) => {
+    setServiceType(type);
+    setStep(1);
+  };
 
   const canAdvance = useMemo(() => {
+    if (step === 0) return serviceType !== "";
+
+    if (serviceType === "piercing") {
+      switch (step) {
+        case 1:
+          return piercingForm.piercingLocation !== "";
+        case 2:
+          return piercingForm.preferredDate !== "";
+        case 3:
+          return piercingForm.name.trim() !== "" && /\S+@\S+\.\S+/.test(piercingForm.email);
+        default:
+          return true;
+      }
+    }
+
     switch (step) {
-      case 0:
-        return form.artist !== "";
       case 1:
-        return form.style !== "";
+        return tattooForm.artist !== "";
       case 2:
-        return form.placement !== "";
+        return tattooForm.style !== "";
       case 3:
-        return form.size !== "";
+        return tattooForm.placement !== "";
       case 4:
-        return form.budget !== "";
+        return tattooForm.size !== "";
       case 5:
-        return form.preferredDate !== "";
+        return tattooForm.budget !== "";
       case 6:
-        return true;
+        return tattooForm.preferredDate !== "";
       case 7:
-        return form.name.trim() !== "" && /\S+@\S+\.\S+/.test(form.email);
+        return true;
+      case 8:
+        return tattooForm.name.trim() !== "" && /\S+@\S+\.\S+/.test(tattooForm.email);
       default:
         return true;
     }
-  }, [step, form]);
+  }, [step, serviceType, tattooForm, piercingForm]);
 
   const go = (dir: 1 | -1) => {
     setDirection(dir);
@@ -91,10 +150,27 @@ export function BookingForm() {
       setSubmitted(true);
       return;
     }
+    if (dir === -1 && step === 1) {
+      setStep(0);
+      return;
+    }
     setStep((s) => Math.min(Math.max(s + dir, 0), steps.length - 1));
   };
 
+  const resetForm = () => {
+    setServiceType("");
+    setTattooForm(tattooInitialState);
+    setPiercingForm(piercingInitialState);
+    setStep(0);
+    setSubmitted(false);
+  };
+
   if (submitted) {
+    const isPiercing = serviceType === "piercing";
+    const name = isPiercing ? piercingForm.name : tattooForm.name;
+    const email = isPiercing ? piercingForm.email : tattooForm.email;
+    const artistName = artists.find((a) => a.slug === tattooForm.artist)?.name ?? "your chosen artist";
+
     return (
       <motion.div
         initial={{ opacity: 0, y: 16 }}
@@ -106,27 +182,36 @@ export function BookingForm() {
         </div>
         <h3 className="mt-6 font-display text-3xl text-fg">Request received.</h3>
         <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted">
-          Thanks, {form.name.split(" ")[0] || "there"} — we&apos;ve logged your request for{" "}
-          {artists.find((a) => a.slug === form.artist)?.name ?? "your chosen artist"}. Expect a
-          reply at <span className="text-fg">{form.email}</span> within two business days to
+          Thanks, {name.split(" ")[0] || "there"} — we&apos;ve logged your{" "}
+          {isPiercing ? "piercing" : "tattoo"} request
+          {!isPiercing && (
+            <>
+              {" "}
+              for {artistName}
+            </>
+          )}
+          . Expect a reply at <span className="text-fg">{email}</span> within two business days to
           confirm details and take a deposit.
         </p>
         <div className="mx-auto mt-8 max-w-sm rounded-lg border border-gold/30 bg-ink p-5 text-left text-sm">
-          <SummaryRow label="Style" value={form.style} />
-          <SummaryRow label="Placement" value={form.placement} />
-          <SummaryRow label="Size" value={form.size} />
-          <SummaryRow label="Budget" value={form.budget} />
-          <SummaryRow label="Preferred date" value={form.preferredDate} last />
+          {isPiercing ? (
+            <>
+              <SummaryRow label="Service" value={piercingForm.serviceType} />
+              <SummaryRow label="Location" value={piercingForm.piercingLocation} />
+              <SummaryRow label="Preferred date" value={piercingForm.preferredDate} last />
+            </>
+          ) : (
+            <>
+              <SummaryRow label="Service" value={tattooForm.serviceType} />
+              <SummaryRow label="Style" value={tattooForm.style} />
+              <SummaryRow label="Placement" value={tattooForm.placement} />
+              <SummaryRow label="Size" value={tattooForm.size} />
+              <SummaryRow label="Budget" value={tattooForm.budget} />
+              <SummaryRow label="Preferred date" value={tattooForm.preferredDate} last />
+            </>
+          )}
         </div>
-        <Button
-          variant="outline"
-          className="mt-8"
-          onClick={() => {
-            setForm(initialState);
-            setStep(0);
-            setSubmitted(false);
-          }}
-        >
+        <Button variant="outline" className="mt-8" onClick={resetForm}>
           Start Another Request
         </Button>
       </motion.div>
@@ -135,7 +220,6 @@ export function BookingForm() {
 
   return (
     <div>
-      {/* Progress */}
       <div className="mb-10 flex items-center gap-1.5">
         {steps.map((label, i) => (
           <div key={label} className="flex flex-1 flex-col gap-2">
@@ -160,7 +244,7 @@ export function BookingForm() {
       <div className="min-h-[340px] overflow-hidden">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
-            key={step}
+            key={`${serviceType}-${step}`}
             custom={direction}
             initial={{ opacity: 0, x: direction * 24 }}
             animate={{ opacity: 1, x: 0 }}
@@ -168,25 +252,39 @@ export function BookingForm() {
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
           >
             {step === 0 && (
+              <StepShell title="What would you like to book?" subtitle="Choose tattoo or piercing to get started.">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <ServiceCard
+                    title="Tattoo"
+                    description="Custom design, placement, and session planning."
+                    selected={serviceType === "tattoo"}
+                    onClick={() => selectService("tattoo")}
+                  />
+                  <ServiceCard
+                    title="Piercing"
+                    description="Location, jewellery guidance, and appointment request."
+                    selected={serviceType === "piercing"}
+                    onClick={() => selectService("piercing")}
+                  />
+                </div>
+              </StepShell>
+            )}
+
+            {serviceType === "tattoo" && step === 1 && (
               <StepShell title="Choose an artist" subtitle="Pick who you'd like to work with, or leave it to us.">
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                   {artists.map((a, i) => (
                     <button
                       key={a.slug}
-                      onClick={() => update("artist", a.slug)}
+                      onClick={() => updateTattoo("artist", a.slug)}
                       className={cn(
                         "overflow-hidden rounded-lg border text-left transition-colors",
-                        form.artist === a.slug ? "border-gold" : "border-border hover:border-gold/40"
+                        tattooForm.artist === a.slug ? "border-gold" : "border-border hover:border-gold/40"
                       )}
                     >
                       <div className="relative aspect-square">
                         {a.image ? (
-                          <Image
-                            src={a.image}
-                            alt={a.name}
-                            fill
-                            className="object-cover"
-                          />
+                          <Image src={a.image} alt={a.name} fill className="object-cover" />
                         ) : (
                           <InkArt seed={i * 13 + 5} styleSlug={a.styleSlugs[0]} className="h-full w-full" />
                         )}
@@ -198,10 +296,10 @@ export function BookingForm() {
                     </button>
                   ))}
                   <button
-                    onClick={() => update("artist", "no-preference")}
+                    onClick={() => updateTattoo("artist", "no-preference")}
                     className={cn(
                       "flex flex-col items-center justify-center rounded-lg border p-4 text-center transition-colors",
-                      form.artist === "no-preference"
+                      tattooForm.artist === "no-preference"
                         ? "border-gold"
                         : "border-dashed border-border hover:border-gold/40"
                     )}
@@ -213,48 +311,52 @@ export function BookingForm() {
               </StepShell>
             )}
 
-            {step === 1 && (
+            {serviceType === "tattoo" && step === 2 && (
               <StepShell title="Pick a style" subtitle="Choose the closest match — your artist will refine it with you.">
-                <PillGrid options={styles.map((s) => s.name)} value={form.style} onChange={(v) => update("style", v)} />
+                <PillGrid options={styles.map((s) => s.name)} value={tattooForm.style} onChange={(v) => updateTattoo("style", v)} />
               </StepShell>
             )}
 
-            {step === 2 && (
-              <StepShell title="Placement" subtitle="Where on the body is this going?">
-                <PillGrid options={placements} value={form.placement} onChange={(v) => update("placement", v)} />
+            {serviceType === "tattoo" && step === 3 && (
+              <StepShell title="Tattoo placement" subtitle="Where on the body is this going?">
+                <PillGrid
+                  options={tattooPlacements}
+                  value={tattooForm.placement}
+                  onChange={(v) => updateTattoo("placement", v)}
+                />
               </StepShell>
             )}
 
-            {step === 3 && (
+            {serviceType === "tattoo" && step === 4 && (
               <StepShell title="Approximate size" subtitle="A rough scale helps us quote session length.">
-                <PillGrid options={sizeOptions} value={form.size} onChange={(v) => update("size", v)} columns={2} />
+                <PillGrid options={sizeOptions} value={tattooForm.size} onChange={(v) => updateTattoo("size", v)} columns={2} />
               </StepShell>
             )}
 
-            {step === 4 && (
+            {serviceType === "tattoo" && step === 5 && (
               <StepShell title="Budget range" subtitle="This keeps the design proposal realistic from the start.">
-                <PillGrid options={budgetRanges} value={form.budget} onChange={(v) => update("budget", v)} columns={2} />
+                <PillGrid options={budgetRanges} value={tattooForm.budget} onChange={(v) => updateTattoo("budget", v)} columns={2} />
               </StepShell>
             )}
 
-            {step === 5 && (
+            {serviceType === "tattoo" && step === 6 && (
               <StepShell title="Preferred dates" subtitle="Give us a target date and a time of day that suits you.">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <Label htmlFor="date">Preferred date</Label>
+                    <Label htmlFor="tattoo-date">Preferred date</Label>
                     <Input
-                      id="date"
+                      id="tattoo-date"
                       type="date"
-                      value={form.preferredDate}
-                      onChange={(e) => update("preferredDate", e.target.value)}
+                      value={tattooForm.preferredDate}
+                      onChange={(e) => updateTattoo("preferredDate", e.target.value)}
                     />
                   </div>
                   <div>
                     <Label>Time of day</Label>
                     <PillGrid
                       options={["Morning", "Afternoon", "Evening"]}
-                      value={form.timeOfDay}
-                      onChange={(v) => update("timeOfDay", v)}
+                      value={tattooForm.timeOfDay}
+                      onChange={(v) => updateTattoo("timeOfDay", v)}
                       columns={3}
                     />
                   </div>
@@ -262,7 +364,7 @@ export function BookingForm() {
               </StepShell>
             )}
 
-            {step === 6 && (
+            {serviceType === "tattoo" && step === 7 && (
               <StepShell title="Reference images" subtitle="Optional — inspiration, placement photos, or prior work.">
                 <label className="flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-border p-10 text-center transition-colors hover:border-gold/50">
                   <ImagePlus size={22} className="text-gold" />
@@ -275,20 +377,20 @@ export function BookingForm() {
                     className="hidden"
                     onChange={(e) => {
                       const names = Array.from(e.target.files ?? []).map((f) => f.name);
-                      update("files", [...form.files, ...names].slice(0, 5));
+                      updateTattoo("files", [...tattooForm.files, ...names].slice(0, 5));
                     }}
                   />
                 </label>
-                {form.files.length > 0 && (
+                {tattooForm.files.length > 0 && (
                   <ul className="mt-4 space-y-2">
-                    {form.files.map((name, i) => (
+                    {tattooForm.files.map((name, i) => (
                       <li
                         key={name + i}
                         className="flex items-center justify-between rounded-lg border border-gold/30 bg-ink px-4 py-2 text-sm text-foreground-secondary"
                       >
                         {name}
                         <button
-                          onClick={() => update("files", form.files.filter((_, idx) => idx !== i))}
+                          onClick={() => updateTattoo("files", tattooForm.files.filter((_, idx) => idx !== i))}
                           aria-label={`Remove ${name}`}
                           className="text-muted hover:text-oxblood-bright"
                         >
@@ -299,39 +401,214 @@ export function BookingForm() {
                   </ul>
                 )}
                 <div className="mt-6">
-                  <Label htmlFor="notes">Anything else?</Label>
+                  <Label htmlFor="tattoo-notes">Anything else?</Label>
                   <Textarea
-                    id="notes"
-                    value={form.notes}
-                    onChange={(e) => update("notes", e.target.value)}
+                    id="tattoo-notes"
+                    value={tattooForm.notes}
+                    onChange={(e) => updateTattoo("notes", e.target.value)}
                     placeholder="Tell us about the idea, cover-ups, or scheduling constraints..."
                   />
                 </div>
               </StepShell>
             )}
 
-            {step === 7 && (
+            {serviceType === "tattoo" && step === 8 && (
               <StepShell title="Contact information" subtitle="So we know where to send the confirmation.">
+                <ContactFields
+                  name={tattooForm.name}
+                  email={tattooForm.email}
+                  phone={tattooForm.phone}
+                  onNameChange={(v) => updateTattoo("name", v)}
+                  onEmailChange={(v) => updateTattoo("email", v)}
+                  onPhoneChange={(v) => updateTattoo("phone", v)}
+                />
+              </StepShell>
+            )}
+
+            {serviceType === "piercing" && step === 1 && (
+              <StepShell title="Piercing location" subtitle="Where would you like to get pierced?">
+                <LocationCardGrid
+                  options={piercingLocations}
+                  value={piercingForm.piercingLocation}
+                  onChange={(v) => {
+                    updatePiercing("piercingLocation", v);
+                    updatePiercing("earPart", "");
+                    updatePiercing("earSide", "");
+                    updatePiercing("noseDetail", "");
+                    updatePiercing("navelDetail", "");
+                    updatePiercing("nippleDetail", "");
+                    updatePiercing("locationDetail", "");
+                  }}
+                />
+                <AnimatePresence>
+                  {piercingForm.piercingLocation && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-6 space-y-5 rounded-lg border border-gold/20 bg-ink/50 p-5">
+                        {piercingForm.piercingLocation === "Ear" && (
+                          <>
+                            <FollowUpGroup label="Which part of the ear?">
+                              {["Lobe", "Helix", "Tragus", "Conch", "Other"].map((opt) => (
+                                <FollowUpPill
+                                  key={opt}
+                                  label={opt}
+                                  selected={piercingForm.earPart === opt}
+                                  onClick={() => updatePiercing("earPart", opt)}
+                                />
+                              ))}
+                            </FollowUpGroup>
+                            <FollowUpGroup label="Left, right, or both?">
+                              {["Left", "Right", "Both"].map((opt) => (
+                                <FollowUpPill
+                                  key={opt}
+                                  label={opt}
+                                  selected={piercingForm.earSide === opt}
+                                  onClick={() => updatePiercing("earSide", opt)}
+                                />
+                              ))}
+                            </FollowUpGroup>
+                          </>
+                        )}
+
+                        {piercingForm.piercingLocation === "Nose" && (
+                          <FollowUpGroup label="Nose pierce style">
+                            {["Nostril", "Septum", "Other"].map((opt) => (
+                              <FollowUpPill
+                                key={opt}
+                                label={opt}
+                                selected={piercingForm.noseDetail === opt}
+                                onClick={() => updatePiercing("noseDetail", opt)}
+                              />
+                            ))}
+                            {piercingForm.noseDetail === "Other" && (
+                              <Input
+                                className="mt-3"
+                                placeholder="Please specify"
+                                value={piercingForm.locationDetail}
+                                onChange={(e) => updatePiercing("locationDetail", e.target.value)}
+                              />
+                            )}
+                          </FollowUpGroup>
+                        )}
+
+                        {piercingForm.piercingLocation === "Navel" && (
+                          <FollowUpGroup label="Navel type">
+                            {["Standard navel", "Other"].map((opt) => (
+                              <FollowUpPill
+                                key={opt}
+                                label={opt}
+                                selected={piercingForm.navelDetail === opt}
+                                onClick={() => updatePiercing("navelDetail", opt)}
+                              />
+                            ))}
+                            {piercingForm.navelDetail === "Other" && (
+                              <Input
+                                className="mt-3"
+                                placeholder="Please specify"
+                                value={piercingForm.locationDetail}
+                                onChange={(e) => updatePiercing("locationDetail", e.target.value)}
+                              />
+                            )}
+                          </FollowUpGroup>
+                        )}
+
+                        {piercingForm.piercingLocation === "XXX-Section" && (
+                          <div>
+                            <Label>Preferred area</Label>
+                            <Textarea
+                              className="mt-2"
+                              placeholder="Please specify the preferred area privately"
+                              value={piercingForm.locationDetail}
+                              onChange={(e) => updatePiercing("locationDetail", e.target.value)}
+                              rows={3}
+                            />
+                          </div>
+                        )}
+
+                        {piercingForm.piercingLocation === "Nipple" && (
+                          <FollowUpGroup label="Which side?">
+                            {["Left", "Right", "Both"].map((opt) => (
+                              <FollowUpPill
+                                key={opt}
+                                label={opt}
+                                selected={piercingForm.nippleDetail === opt}
+                                onClick={() => updatePiercing("nippleDetail", opt)}
+                              />
+                            ))}
+                          </FollowUpGroup>
+                        )}
+
+                        {!PIERCING_FOLLOW_UP_LOCATIONS.includes(
+                          piercingForm.piercingLocation as (typeof PIERCING_FOLLOW_UP_LOCATIONS)[number]
+                        ) && (
+                          <div>
+                            <Label htmlFor="piercing-notes-detail">Additional notes</Label>
+                            <Textarea
+                              id="piercing-notes-detail"
+                              className="mt-2"
+                              placeholder="Tell us more about this location"
+                              value={piercingForm.locationDetail}
+                              onChange={(e) => updatePiercing("locationDetail", e.target.value)}
+                              rows={3}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </StepShell>
+            )}
+
+            {serviceType === "piercing" && step === 2 && (
+              <StepShell title="Preferred dates" subtitle="Give us a target date and a time of day that suits you.">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
-                    <Label htmlFor="name">Full name</Label>
-                    <Input id="name" value={form.name} onChange={(e) => update("name", e.target.value)} required />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="piercing-date">Preferred date</Label>
                     <Input
-                      id="email"
-                      type="email"
-                      value={form.email}
-                      onChange={(e) => update("email", e.target.value)}
-                      required
+                      id="piercing-date"
+                      type="date"
+                      value={piercingForm.preferredDate}
+                      onChange={(e) => updatePiercing("preferredDate", e.target.value)}
                     />
                   </div>
-                  <div className="sm:col-span-2">
-                    <Label htmlFor="phone">Phone (optional)</Label>
-                    <Input id="phone" type="tel" value={form.phone} onChange={(e) => update("phone", e.target.value)} />
+                  <div>
+                    <Label>Time of day</Label>
+                    <PillGrid
+                      options={["Morning", "Afternoon", "Evening"]}
+                      value={piercingForm.timeOfDay}
+                      onChange={(v) => updatePiercing("timeOfDay", v)}
+                      columns={3}
+                    />
                   </div>
                 </div>
+                <div className="mt-6">
+                  <Label htmlFor="piercing-notes">Anything else?</Label>
+                  <Textarea
+                    id="piercing-notes"
+                    value={piercingForm.notes}
+                    onChange={(e) => updatePiercing("notes", e.target.value)}
+                    placeholder="Jewellery preferences, first piercing, or scheduling constraints..."
+                  />
+                </div>
+              </StepShell>
+            )}
+
+            {serviceType === "piercing" && step === 3 && (
+              <StepShell title="Contact information" subtitle="So we know where to send the confirmation.">
+                <ContactFields
+                  name={piercingForm.name}
+                  email={piercingForm.email}
+                  phone={piercingForm.phone}
+                  onNameChange={(v) => updatePiercing("name", v)}
+                  onEmailChange={(v) => updatePiercing("email", v)}
+                  onPhoneChange={(v) => updatePiercing("phone", v)}
+                />
               </StepShell>
             )}
           </motion.div>
@@ -353,6 +630,150 @@ export function BookingForm() {
             </>
           )}
         </Button>
+      </div>
+    </div>
+  );
+}
+
+function ServiceCard({
+  title,
+  description,
+  selected,
+  onClick,
+}: {
+  title: string;
+  description: string;
+  selected: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <motion.button
+      type="button"
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      onClick={onClick}
+      className={cn(
+        "rounded-lg border p-6 text-left transition-colors",
+        selected ? "border-gold bg-gold/10" : "border-border hover:border-gold/40"
+      )}
+      aria-pressed={selected}
+    >
+      <p className="font-display text-xl text-fg">{title}</p>
+      <p className="mt-2 text-sm text-muted">{description}</p>
+    </motion.button>
+  );
+}
+
+function LocationCardGrid({
+  options,
+  value,
+  onChange,
+}: {
+  options: string[];
+  value: string;
+  onChange: (v: string) => void;
+}) {
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent, index: number) => {
+      const cols = typeof window !== "undefined" && window.innerWidth >= 640 ? 3 : 2;
+      let next = index;
+      if (e.key === "ArrowRight") next = Math.min(index + 1, options.length - 1);
+      else if (e.key === "ArrowLeft") next = Math.max(index - 1, 0);
+      else if (e.key === "ArrowDown") next = Math.min(index + cols, options.length - 1);
+      else if (e.key === "ArrowUp") next = Math.max(index - cols, 0);
+      else if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onChange(options[index]);
+        return;
+      } else return;
+
+      e.preventDefault();
+      document.getElementById(`location-${next}`)?.focus();
+    },
+    [options, onChange]
+  );
+
+  return (
+    <div role="radiogroup" aria-label="Piercing location" className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      {options.map((opt, i) => (
+        <motion.button
+          key={opt}
+          id={`location-${i}`}
+          type="button"
+          role="radio"
+          aria-checked={value === opt}
+          tabIndex={value === opt || (value === "" && i === 0) ? 0 : -1}
+          whileHover={{ scale: 1.03, borderColor: "rgba(212, 175, 55, 0.6)" }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => onChange(opt)}
+          onKeyDown={(e) => handleKeyDown(e, i)}
+          className={cn(
+            "min-h-[52px] rounded-lg border px-4 py-3 text-left text-sm transition-colors duration-200",
+            value === opt
+              ? "border-gold bg-gold/10 text-gold-bright shadow-[0_0_20px_rgba(212,175,55,0.15)]"
+              : "border-border text-fg/80 hover:border-gold/40 hover:bg-gold/5"
+          )}
+        >
+          {opt}
+        </motion.button>
+      ))}
+    </div>
+  );
+}
+
+function FollowUpGroup({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <Label>{label}</Label>
+      <div className="mt-2 flex flex-wrap gap-2">{children}</div>
+    </div>
+  );
+}
+
+function FollowUpPill({ label, selected, onClick }: { label: string; selected: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={selected}
+      className={cn(
+        "rounded-full border px-3 py-2 text-xs transition-colors",
+        selected ? "border-gold bg-gold/10 text-gold-bright" : "border-border text-fg/80 hover:border-gold/40"
+      )}
+    >
+      {label}
+    </button>
+  );
+}
+
+function ContactFields({
+  name,
+  email,
+  phone,
+  onNameChange,
+  onEmailChange,
+  onPhoneChange,
+}: {
+  name: string;
+  email: string;
+  phone: string;
+  onNameChange: (v: string) => void;
+  onEmailChange: (v: string) => void;
+  onPhoneChange: (v: string) => void;
+}) {
+  return (
+    <div className="grid gap-5 sm:grid-cols-2">
+      <div>
+        <Label htmlFor="name">Full name</Label>
+        <Input id="name" value={name} onChange={(e) => onNameChange(e.target.value)} required />
+      </div>
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input id="email" type="email" value={email} onChange={(e) => onEmailChange(e.target.value)} required />
+      </div>
+      <div className="sm:col-span-2">
+        <Label htmlFor="phone">Phone (optional)</Label>
+        <Input id="phone" type="tel" value={phone} onChange={(e) => onPhoneChange(e.target.value)} />
       </div>
     </div>
   );
@@ -394,6 +815,7 @@ function PillGrid({
       {options.map((opt) => (
         <button
           key={opt}
+          type="button"
           onClick={() => onChange(opt)}
           className={cn(
             "rounded-lg border px-4 py-3 text-left text-sm transition-colors",

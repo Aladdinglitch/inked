@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -10,22 +11,38 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 export function ContactForm() {
+  const [submitError, setSubmitError] = useState("");
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<ContactFormValues>({
-    resolver: zodResolver(contactSchema),
-  });
+  } = useForm<ContactFormValues>({ resolver: zodResolver(contactSchema) });
 
-  const onSubmit = handleSubmit(() => {
-    toast.success("Message sent. We'll reply soon.");
-    reset();
+  const onSubmit = handleSubmit(async (data) => {
+    setSubmitError("");
+    try {
+      const response = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          type: "contact",
+          website: data.website ?? "",
+          data: { type: "contact", name: data.name, email: data.email, phone: data.phone, subject: data.subject, message: data.message },
+        }),
+      });
+      const result = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(result.error ?? "We couldn't send your inquiry right now.");
+      toast.success("Inquiry received. We’ll reply soon.");
+      reset();
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "We couldn't send your inquiry right now. Please try again.");
+    }
   });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-5 rounded-3xl border border-border bg-card p-6 md:p-8">
+    <form onSubmit={onSubmit} className="relative space-y-5 rounded-3xl border border-border bg-card p-6 md:p-8">
+      <input {...register("website")} tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
       <div>
         <Label htmlFor="name">Name</Label>
         <Input id="name" className="mt-2" {...register("name")} />
@@ -33,8 +50,13 @@ export function ContactForm() {
       </div>
       <div>
         <Label htmlFor="email">Email</Label>
-        <Input id="email" type="email" className="mt-2" {...register("email")} />
+        <Input id="email" type="email" autoComplete="email" className="mt-2" {...register("email")} />
         {errors.email ? <p className="mt-1 text-xs text-secondary">{errors.email.message}</p> : null}
+      </div>
+      <div>
+        <Label htmlFor="phone">Phone <span className="text-foreground-subtle">(optional)</span></Label>
+        <Input id="phone" type="tel" autoComplete="tel" className="mt-2" {...register("phone")} />
+        {errors.phone ? <p className="mt-1 text-xs text-secondary">{errors.phone.message}</p> : null}
       </div>
       <div>
         <Label htmlFor="subject">Subject</Label>
@@ -43,10 +65,13 @@ export function ContactForm() {
       </div>
       <div>
         <Label htmlFor="message">Message</Label>
-        <Textarea id="message" className="mt-2" {...register("message")} />
+        <Textarea id="message" className="mt-2" rows={6} {...register("message")} />
         {errors.message ? <p className="mt-1 text-xs text-secondary">{errors.message.message}</p> : null}
       </div>
-      <Button type="submit" disabled={isSubmitting}>Send message</Button>
+      {submitError ? <p className="flex items-center justify-between gap-4 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-foreground" role="alert" aria-live="assertive"><span>{submitError}</span><button type="button" className="shrink-0 font-semibold text-primary underline-offset-4 hover:underline" onClick={() => void onSubmit()}>Retry</button></p> : null}
+      <div aria-live="polite">
+        <Button type="submit" disabled={isSubmitting}>{isSubmitting ? "Sending…" : "Send message"}</Button>
+      </div>
     </form>
   );
 }

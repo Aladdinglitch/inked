@@ -377,9 +377,20 @@ export const blogPosts: BlogPost[] = [
   },
 ];
 
-export const placements = [
+export const tattooPlacements = [
   "Forearm", "Upper Arm", "Shoulder", "Chest", "Back", "Ribs",
   "Thigh", "Calf", "Ankle", "Hand", "Neck", "Full Sleeve",
+];
+
+export const piercingLocations = [
+  "Nose",
+  "Navel",
+  "Ear",
+  "Tongue",
+  "XXX-Section",
+  "Nipple",
+  "Chin",
+  "Eyebrow",
 ];
 
 export const sizeOptions = [

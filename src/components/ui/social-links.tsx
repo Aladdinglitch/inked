@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Share2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { SITE } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +15,8 @@ function IconLink({
   label: string;
   children: React.ReactNode;
 }) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <motion.a
       href={href}
@@ -31,12 +33,8 @@ function IconLink({
       transition={{ duration: 0.2 }}
     >
       <motion.div
-        animate={{ rotate: [0, 10, -10, 0] }}
-        transition={{
-          duration: 0.5,
-          repeat: Infinity,
-          repeatDelay: 3,
-        }}
+        animate={shouldReduceMotion ? undefined : { rotate: [0, 10, -10, 0] }}
+        transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 3 }}
       >
         {children}
       </motion.div>

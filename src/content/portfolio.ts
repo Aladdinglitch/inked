@@ -1,32 +1,25 @@
 export type PortfolioItem = {
   id: string;
   title: string;
-  category: string;
+  category: "fine-line" | "traditional" | "realism" | "custom" | "piercings";
   artistId: string;
   image: string;
   height: "sm" | "md" | "lg";
 };
 
-const categories = ["blackwork", "fine-line", "traditional", "realism", "custom", "piercings"] as const;
-const heights: PortfolioItem["height"][] = ["sm", "md", "lg"];
-
-const fwcImages = [
-  "/images/fwc1.jpg",
-  "/images/fwc2.jpg",
-  "/images/fwc3.jpg",
-  "/images/fwc4.jpg",
-  "/images/fwc5.jpg",
-  "/images/fwc6.jpg",
+const portfolioEntries: Omit<PortfolioItem, "id" | "artistId">[] = [
+  { title: "Floral contour", category: "fine-line", image: "/images/folio-1.svg", height: "lg" },
+  { title: "Piercing placement", category: "piercings", image: "/images/folio-2.svg", height: "md" },
+  { title: "Botanical study", category: "fine-line", image: "/images/folio-3.svg", height: "lg" },
+  { title: "Classic motif", category: "traditional", image: "/images/folio-4.svg", height: "sm" },
+  { title: "Portrait study", category: "realism", image: "/images/folio-5.svg", height: "md" },
+  { title: "Custom composition", category: "custom", image: "/images/folio-6.svg", height: "lg" },
+  { title: "Ornamental linework", category: "fine-line", image: "/images/folio-7.svg", height: "sm" },
+  { title: "Personal design", category: "custom", image: "/images/folio-8.svg", height: "md" },
 ];
 
-export const portfolioItems: PortfolioItem[] = Array.from({ length: 30 }, (_, i) => {
-  const n = i + 1;
-  return {
-    id: `p${n}`,
-    title: `Studio Study ${n}`,
-    category: categories[i % categories.length],
-    artistId: `a${(i % 5) + 1}`,
-    image: i < 6 ? fwcImages[i] : `/images/folio-${(i % 8) + 1}.svg`,
-    height: heights[i % heights.length],
-  };
-});
+export const portfolioItems: PortfolioItem[] = portfolioEntries.map((entry, index) => ({
+  ...entry,
+  id: `portfolio-${index + 1}`,
+  artistId: "a1",
+}));

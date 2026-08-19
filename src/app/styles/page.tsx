@@ -31,7 +31,7 @@ export default function StylesPage() {
                 <h2 className="display text-3xl text-foreground md:text-4xl">{style.name}</h2>
                 <p className="mt-3 leading-relaxed text-muted-foreground">{style.summary}</p>
                 <Button asChild className="mt-6 w-fit">
-                  <Link href="/booking">Book this style</Link>
+                  <Link href={style.slug === "piercings" ? "/booking/piercing" : `/booking/tattoo?style=${style.id}`}>Book this service</Link>
                 </Button>
               </div>
             </article>

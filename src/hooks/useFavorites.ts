@@ -1,30 +1,41 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useMemo, useSyncExternalStore } from "react";
 
 const KEY = "ink-attraction-favorites";
+const CHANGE_EVENT = "ink-attraction-favorites-change";
+const EMPTY_FAVORITES = "[]";
+
+function subscribe(onStoreChange: () => void) {
+  window.addEventListener(CHANGE_EVENT, onStoreChange);
+  window.addEventListener("storage", onStoreChange);
+  return () => {
+    window.removeEventListener(CHANGE_EVENT, onStoreChange);
+    window.removeEventListener("storage", onStoreChange);
+  };
+}
+
+function getSnapshot() {
+  return window.localStorage.getItem(KEY) ?? EMPTY_FAVORITES;
+}
 
 export function useFavorites() {
-  const [favorites, setFavorites] = useState<Set<string>>(new Set());
-
-  useEffect(() => {
+  const serializedFavorites = useSyncExternalStore(subscribe, getSnapshot, () => EMPTY_FAVORITES);
+  const favorites = useMemo(() => {
     try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) setFavorites(new Set(JSON.parse(raw) as string[]));
+      return new Set(JSON.parse(serializedFavorites) as string[]);
     } catch {
-      /* ignore */
+      return new Set<string>();
     }
-  }, []);
+  }, [serializedFavorites]);
 
   const toggle = useCallback((id: string) => {
-    setFavorites((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      localStorage.setItem(KEY, JSON.stringify([...next]));
-      return next;
-    });
-  }, []);
+    const next = new Set(favorites);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    window.localStorage.setItem(KEY, JSON.stringify([...next]));
+    window.dispatchEvent(new Event(CHANGE_EVENT));
+  }, [favorites]);
 
   return { favorites, toggle };
 }
