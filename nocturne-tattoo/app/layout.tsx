@@ -32,7 +32,7 @@ const localBusinessSchema = {
   name: "Inked Attraction Tattoo & Piercing Studio",
   areaServed: "Lagos, Lagos State, Nigeria",
   telephone: "+234 813 038-1326",
-  email: "khalilhayfa5@gmail.com",
+  email: "towobolaelizabeth79@gmail.com",
   sameAs: ["https://wa.me/2348130381326?text=Hi%2C%20I%27d%20like%20to%20book%20a%20tattoo%20or%20piercing%20session%20at%20Inked%20Attraction."],
   ...(siteUrl ? { url: siteUrl } : {}),
 };
