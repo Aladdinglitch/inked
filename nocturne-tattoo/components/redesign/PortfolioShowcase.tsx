@@ -3,8 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
 
 import { gallery } from "@/lib/data";
 import { ease } from "@/lib/motion";
@@ -18,29 +17,25 @@ const showcaseImages = [
   "/images/fwc6.jpg",
 ];
 
+const selectedWork = [
+  ["Fine Line Precision", "The details are unbelievably clean. I'm obsessed."],
+  ["Blackwork Study", "The contrast and depth are just perfect. 🔥"],
+  ["Portrait in Ink", "You captured every expression beautifully."],
+  ["A Story in Ink", "It feels personal, timeless, and exactly like me."],
+  ["Bold Expression", "This came out even better than I imagined."],
+  ["Timeless Work", "Absolutely beautiful. Every detail feels intentional."],
+] as const;
+
 const cards = gallery.slice(0, 6).map((piece, index) => ({
   ...piece,
   image: showcaseImages[index],
+  title: selectedWork[index][0],
+  caption: selectedWork[index][1],
   number: String(index + 1).padStart(2, "0"),
 }));
 
 export default function PortfolioShowcase() {
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const shouldReduce = useReducedMotion();
-  const activeCard = activeIndex === null ? null : cards[activeIndex];
-
-  useEffect(() => {
-    if (activeIndex === null) return;
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setActiveIndex(null);
-      if (event.key === "ArrowRight") setActiveIndex((index) => index === null ? 0 : (index + 1) % cards.length);
-      if (event.key === "ArrowLeft") setActiveIndex((index) => index === null ? cards.length - 1 : (index - 1 + cards.length) % cards.length);
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [activeIndex]);
 
   return (
     <section className="relative overflow-hidden py-24 lg:py-36" aria-labelledby="portfolio-heading">
@@ -68,73 +63,86 @@ export default function PortfolioShowcase() {
 
         <div className="mt-10 grid auto-rows-[minmax(180px,22vw)] grid-cols-2 gap-3 sm:mt-14 sm:grid-cols-4 lg:gap-4">
           {cards.map((card, index) => (
-            <motion.button
-              key={card.id}
-              type="button"
-              onClick={() => setActiveIndex(index)}
-              initial={{ opacity: 0, y: shouldReduce ? 0 : 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ delay: index * 0.06, duration: 0.6, ease: ease.spring }}
-              className={`group relative overflow-hidden rounded-xl2 border border-gold/20 bg-ink text-left transition-[border-color,transform,box-shadow] duration-500 hover:-translate-y-1 hover:border-gold/60 hover:shadow-[0_22px_60px_rgba(0,0,0,0.3)] focus-visible:outline-offset-4 ${index === 0 ? "col-span-2 row-span-2" : index === 3 ? "row-span-2" : ""}`}
-              aria-label={`Open ${card.title}`}
-            >
-              <Image
-                src={card.image}
-                alt={card.title}
-                fill
-                sizes={index === 0 ? "(max-width: 640px) 100vw, 50vw" : "(max-width: 640px) 50vw, 25vw"}
-                className="object-cover transition duration-700 ease-out group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-void/95 via-void/10 to-transparent" />
-              <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-3 sm:inset-x-6 sm:bottom-6">
-                <div>
-                  <span className="font-mono text-[10px] tracking-[0.25em] text-gold">{card.number}</span>
-                  <h3 className={`mt-2 font-display leading-none text-foreground ${index === 0 ? "text-3xl sm:text-5xl" : "text-xl sm:text-2xl"}`}>
-                    {card.title}
-                  </h3>
-                </div>
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/25 bg-black/20 text-gold backdrop-blur-md transition-colors group-hover:border-gold group-hover:bg-gold group-hover:text-void">
-                  <ArrowUpRight size={15} />
-                </span>
-              </div>
-            </motion.button>
+            <PortfolioCard key={card.id} card={card} index={index} shouldReduce={shouldReduce} />
           ))}
         </div>
       </div>
+    </section>
+  );
+}
 
-      {activeCard && activeIndex !== null && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-void/95 p-4 backdrop-blur-md sm:p-8"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${activeCard.title} gallery view`}
-          onClick={() => setActiveIndex(null)}
-        >
-          <div className="relative w-full max-w-4xl" onClick={(event) => event.stopPropagation()}>
-            <div className="relative aspect-[4/3] overflow-hidden rounded-xl2 border border-gold/30 bg-ink sm:aspect-[16/10]">
-              <Image src={activeCard.image} alt={activeCard.title} fill sizes="(max-width: 1024px) 100vw, 900px" className="object-contain" priority />
-            </div>
-            <div className="mt-4 flex items-center justify-between gap-4">
-              <div>
-                <p className="font-mono text-[10px] tracking-[0.25em] text-gold">{activeCard.number} / {String(cards.length).padStart(2, "0")}</p>
-                <h3 className="mt-2 font-display text-2xl text-foreground sm:text-3xl">{activeCard.title}</h3>
-              </div>
-              <button type="button" onClick={() => setActiveIndex(null)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/20 text-foreground transition-colors hover:border-gold hover:text-gold" aria-label="Close gallery view">
-                <X size={18} />
-              </button>
-            </div>
-            <div className="mt-5 flex gap-2">
-              <button type="button" onClick={() => setActiveIndex((index) => index === null ? 0 : (index - 1 + cards.length) % cards.length)} className="grid h-10 w-10 place-items-center rounded-full border border-white/20 text-foreground transition-colors hover:border-gold hover:text-gold" aria-label="Previous portfolio image">
-                <ArrowLeft size={16} />
-              </button>
-              <button type="button" onClick={() => setActiveIndex((index) => index === null ? 0 : (index + 1) % cards.length)} className="grid h-10 w-10 place-items-center rounded-full border border-white/20 text-foreground transition-colors hover:border-gold hover:text-gold" aria-label="Next portfolio image">
-                <ArrowRight size={16} />
-              </button>
-            </div>
+type PortfolioCardData = (typeof cards)[number];
+
+function PortfolioCard({
+  card,
+  index,
+  shouldReduce,
+}: {
+  card: PortfolioCardData;
+  index: number;
+  shouldReduce: boolean | null;
+}) {
+  const isLead = index === 0;
+  const imageVariants = {
+    idle: { scale: 1 },
+    active: { scale: shouldReduce ? 1 : 1.025 },
+  };
+  const overlayVariants = {
+    idle: { opacity: 0 },
+    active: { opacity: 1 },
+  };
+  const bubbleVariants = {
+    idle: { opacity: 0, y: shouldReduce ? 0 : 12, scale: shouldReduce ? 1 : 0.97 },
+    active: { opacity: 1, y: 0, scale: 1 },
+  };
+
+  return (
+    <motion.article
+      tabIndex={0}
+      aria-labelledby={`portfolio-title-${card.id}`}
+      aria-describedby={`portfolio-caption-${card.id}`}
+      initial="idle"
+      whileHover="active"
+      whileFocus="active"
+      variants={{ idle: {}, active: {} }}
+      transition={{ duration: shouldReduce ? 0.01 : 0.4, ease: ease.expo }}
+      className={`group relative overflow-hidden rounded-xl2 border border-gold/20 bg-ink text-left outline-none transition-[border-color,box-shadow] duration-500 hover:border-gold/60 hover:shadow-[0_22px_60px_rgba(0,0,0,0.3)] focus-visible:border-gold focus-visible:ring-2 focus-visible:ring-gold/70 ${isLead ? "col-span-2 row-span-2" : index === 3 ? "row-span-2" : ""}`}
+    >
+      <motion.div variants={imageVariants} transition={{ duration: shouldReduce ? 0.01 : 0.45, ease: ease.expo }} className="absolute inset-0">
+        <Image
+          src={card.image}
+          alt={card.title}
+          fill
+          sizes={isLead ? "(max-width: 640px) 100vw, 50vw" : "(max-width: 640px) 50vw, 25vw"}
+          className="object-cover"
+        />
+      </motion.div>
+
+      <motion.div
+        variants={overlayVariants}
+        transition={{ duration: shouldReduce ? 0.01 : 0.4, ease: ease.expo }}
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(145deg,transparent_34%,rgba(10,9,8,0.12)_58%,rgba(10,9,8,0.76)_100%)]"
+      />
+
+      <div className="absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6">
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <span className="font-mono text-[10px] tracking-[0.25em] text-gold">{card.number}</span>
+            <h3 id={`portfolio-title-${card.id}`} className={`mt-2 font-display leading-none text-foreground ${isLead ? "text-3xl sm:text-5xl" : "text-xl sm:text-2xl"}`}>
+              {card.title}
+            </h3>
           </div>
         </div>
-      )}
-    </section>
+
+        <motion.p
+          id={`portfolio-caption-${card.id}`}
+          variants={bubbleVariants}
+          transition={{ duration: shouldReduce ? 0.01 : 0.42, ease: ease.expo }}
+          className="mt-4 max-w-[26ch] rounded-[1rem_1rem_1rem_0.35rem] border border-white/15 bg-white/[0.11] px-3.5 py-2.5 text-sm leading-[1.45] text-white shadow-[0_12px_34px_rgba(0,0,0,0.24)] backdrop-blur-[14px]"
+        >
+          {card.caption}
+        </motion.p>
+      </div>
+    </motion.article>
   );
 }

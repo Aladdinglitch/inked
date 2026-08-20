@@ -9,28 +9,34 @@ const SLIDE_DURATION = 5500;
 
 const heroSlides = [
   {
-    image: "/images/porfolio/Heroshow/b14.jpg",
-    title: "Portfolio image 01",
-    medium: "Portfolio work",
+    image: "/images/porfolio/Heroshow/artist.jpg",
+    title: "Elizabeth Adedayo Towobola",
+    medium: "Tattoo Artist & Founder",
     objectPosition: "center 38%",
   },
   {
-    image: "/images/fwc2.jpg",
-    title: "Portfolio image 02",
-    medium: "Portfolio work",
+    image: "/images/porfolio/Heroshow/Working.jpeg",
+    title: "The Artist at Work",
+    medium: "Tattooing • Inked Attraction",
     objectPosition: "center center",
   },
   {
-    image: "/images/fwc4.jpg",
-    title: "Portfolio image 03",
-    medium: "Portfolio work",
+    image: "/images/porfolio/Heroshow/piercin.jpg",
+    title: "The Inked Attraction Studio",
+    medium: "Tattoo & Piercing Studio",
+    objectPosition: "center 42%",
+  },
+  {
+    image: "/images/porfolio/Heroshow/booking.jpg",
+    title: "Your Story, Our Art",
+    medium: "Book Your Tattoo or Piercing Session",
     objectPosition: "center center",
   },
   {
-    image: "/images/fwc6.jpg",
-    title: "Portfolio image 04",
-    medium: "Portfolio work",
-    objectPosition: "center center",
+    image: "/images/porfolio/Heroshow/general.jpg",
+    title: "Selected Work",
+    medium: "Tattoo Portfolio",
+    objectPosition: "center 40%",
   },
 ];
 
