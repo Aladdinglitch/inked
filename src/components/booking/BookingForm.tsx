@@ -110,7 +110,7 @@ export function BookingForm() {
   }
 
   return (
-    <form name="tattoo-booking" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={onSubmit} className="rounded-3xl border border-border bg-card p-6 md:p-8">
+    <form name="tattoo-booking" method="POST" onSubmit={onSubmit} className="rounded-3xl border border-border bg-card p-6 md:p-8">
       <input type="hidden" name="form-name" value="tattoo-booking" />
       <input {...register("website")} name="bot-field" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
       <div className="mb-8 flex flex-wrap gap-2">

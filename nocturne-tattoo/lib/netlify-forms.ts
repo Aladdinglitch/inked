@@ -8,7 +8,7 @@ export async function submitNetlifyForm(
     if (value !== undefined) body.set(key, String(value));
   });
 
-  const response = await fetch("/", {
+  const response = await fetch("/__forms.html", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body,

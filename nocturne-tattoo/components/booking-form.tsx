@@ -246,8 +246,6 @@ export function BookingForm() {
     <form
       name={serviceType === "piercing" ? "piercing-booking" : "tattoo-booking"}
       method="POST"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
       onSubmit={handleSubmit}
     >
       <input type="hidden" name="form-name" value={serviceType === "piercing" ? "piercing-booking" : "tattoo-booking"} />

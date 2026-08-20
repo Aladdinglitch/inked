@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Netlify Forms (deploy-time detection only)</title>
+  </head>
+  <body>
+    <!--
+      This file exists solely so the @netlify/plugin-nextjs@5 runtime can
+      detect our three Netlify Forms at deploy time. It is never served to
+      users. See: https://opennext.js.org/netlify/forms
+    -->
+
+    <form name="tattoo-booking" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="tattoo-booking" />
+      <input type="hidden" name="bot-field" />
+      <input type="text" name="serviceType" />
+      <input type="text" name="artist" />
+      <input type="text" name="style" />
+      <input type="text" name="placement" />
+      <input type="text" name="size" />
+      <input type="text" name="budget" />
+      <input type="text" name="preferredDate" />
+      <input type="text" name="timeOfDay" />
+      <input type="text" name="notes" />
+      <input type="text" name="files" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+    </form>
+
+    <form name="piercing-booking" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="piercing-booking" />
+      <input type="hidden" name="bot-field" />
+      <input type="text" name="serviceType" />
+      <input type="text" name="piercingLocation" />
+      <input type="text" name="earPart" />
+      <input type="text" name="earSide" />
+      <input type="text" name="noseDetail" />
+      <input type="text" name="navelDetail" />
+      <input type="text" name="nippleDetail" />
+      <input type="text" name="locationDetail" />
+      <input type="text" name="preferredDate" />
+      <input type="text" name="timeOfDay" />
+      <input type="text" name="notes" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+    </form>
+
+    <form name="contact-inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="contact-inquiry" />
+      <input type="hidden" name="bot-field" />
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="subject" />
+      <textarea name="message"></textarea>
+    </form>
+  </body>
+</html>

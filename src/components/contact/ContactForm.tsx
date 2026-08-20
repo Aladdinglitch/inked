@@ -39,7 +39,7 @@ export function ContactForm() {
   });
 
   return (
-    <form name="contact-inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={onSubmit} className="relative space-y-5 rounded-3xl border border-border bg-card p-6 md:p-8">
+    <form name="contact-inquiry" method="POST" onSubmit={onSubmit} className="relative space-y-5 rounded-3xl border border-border bg-card p-6 md:p-8">
       <input type="hidden" name="form-name" value="contact-inquiry" />
       <input {...register("website")} name="bot-field" tabIndex={-1} autoComplete="off" aria-hidden="true" className="absolute -left-[9999px] h-px w-px opacity-0" />
       <div>

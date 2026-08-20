@@ -58,8 +58,6 @@ export function ContactForm() {
     <form
       name="contact-inquiry"
       method="POST"
-      data-netlify="true"
-      data-netlify-honeypot="bot-field"
       onSubmit={handleSubmit}
       className="space-y-5"
     >
