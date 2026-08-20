@@ -17,11 +17,7 @@ export function PricingCards({ tiers }: { tiers: PricingTier[] }) {
               tier.highlight && "border-gold/60 bg-gradient-to-b from-gold/10 to-surface"
             )}
           >
-            {tier.highlight && (
-              <span className="mb-4 inline-block w-fit rounded-full bg-gold px-3 py-1 text-[10px] font-mono uppercase tracking-widest text-void">
-                Most Booked
-              </span>
-            )}
+
             <h3 className="font-display text-xl text-fg">{tier.name}</h3>
             <div className="mt-4 flex items-baseline gap-2">
               <span className="font-display text-3xl text-gold">{tier.price}</span>

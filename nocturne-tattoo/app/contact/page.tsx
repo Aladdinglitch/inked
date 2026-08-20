@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 };
 
 const details = [
-  { icon: MapPin, label: "Address", value: "Lagos, Lagos State, Nigeria" },
+  { icon: MapPin, label: "Location", value: "Lagos, Lagos State, Nigeria" },
   { icon: Phone, label: "Phone", value: "+234 813 038-1326" },
-  { icon: Mail, label: "Email", value: "Studio@InkedAttraction.com" },
-  { icon: Clock, label: "Hours", value: "Mon–Sat 10am–10pm • Sun 2pm–9pm" },
+  { icon: Mail, label: "Email", value: "khalilhayfa5@gmail.com" },
+  { icon: Clock, label: "Hours", value: "By appointment — confirm availability during booking." },
 ];
 
 export default function ContactPage() {
@@ -41,11 +41,14 @@ export default function ContactPage() {
                   <d.icon size={18} className="mt-0.5 shrink-0 text-gold" />
                   <div>
                     <dt className="text-xs uppercase tracking-widest text-foreground-muted">{d.label}</dt>
-                    <dd className="mt-1 text-sm text-foreground">{d.value}</dd>
+                    <dd className="mt-1 text-sm text-foreground">
+                      {d.label === "Phone" ? <a href="tel:+2348130381326" className="hover:text-gold">{d.value}</a> : d.label === "Email" ? <a href="mailto:khalilhayfa5@gmail.com" className="hover:text-gold">{d.value}</a> : d.value}
+                    </dd>
                   </div>
                 </div>
               ))}
             </dl>
+            <p className="mt-6 text-xs leading-relaxed text-muted">TODO(confirm-with-studio): Confirm Inked Attraction&apos;s complete public street address before publishing a map or street-level location.</p>
             <SocialLinks className="mt-8" />
           </FadeUp>
 

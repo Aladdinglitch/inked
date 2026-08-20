@@ -104,11 +104,7 @@ const TestimonialCard = ({ testimonial, index }: any) => (
     className="group"
   >
     <div className="relative overflow-hidden rounded-2xl border border-border/30 bg-gradient-to-br from-surface/80 via-surface/50 to-gold/5 p-8 backdrop-blur-sm transition-all duration-500 hover:border-gold/30 hover:shadow-lg hover:shadow-gold/10 hover:bg-surface/90">
-      <div className="flex gap-1 mb-4">
-        {[...Array(testimonial.rating)].map((_, i) => (
-          <span key={i} className="text-gold">★</span>
-        ))}
-      </div>
+
       <p className="text-lg leading-relaxed text-ink mb-6">&quot;{testimonial.quote}&quot;</p>
       <div className="flex items-center justify-between">
         <div>
@@ -174,7 +170,7 @@ export default function LegacyHome() {
             viewport={{ once: true, margin: "-100px" }}
             className="mb-20 text-center"
           >
-            <p className="mb-4 text-sm uppercase tracking-widest text-gold/70">Est. 2015</p>
+            <p className="mb-4 text-sm uppercase tracking-widest text-gold/70">Studio practice</p>
             <h2 className="font-display text-5xl sm:text-6xl text-foreground mb-6">
               A Decade of <span className="text-gold italic">Excellence</span>
             </h2>
@@ -184,10 +180,10 @@ export default function LegacyHome() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
-            <StatCard value={11} suffix="+" label="Years Open" delay={0} />
-            <StatCard value={6} suffix="" label="Resident Artists" delay={0.1} />
-            <StatCard value={3200} suffix="+" label="Pieces Completed" delay={0.2} />
-            <StatCard value={4.9} suffix="/5" label="Avg. Client Rating" delay={0.3} />
+            <StatCard value="—" suffix="" label="Years open — confirm" delay={0} />
+            <StatCard value="—" suffix="" label="Artists — see roster" delay={0.1} />
+            <StatCard value="—" suffix="" label="Completed pieces — confirm" delay={0.2} />
+            <StatCard value="—" suffix="" label="Client rating — pending" delay={0.3} />
           </div>
         </div>
       </section>
@@ -282,7 +278,7 @@ export default function LegacyHome() {
               Portfolio <span className="text-gold italic">Highlights</span>
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-foreground-secondary">
-              A selection from 3,200+ completed pieces spanning all styles and scales.
+              A selection of portfolio work. Details and approved captions are available during consultation.
             </p>
           </motion.div>
 

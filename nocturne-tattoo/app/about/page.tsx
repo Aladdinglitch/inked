@@ -34,12 +34,6 @@ const values = [
   },
 ];
 
-const timeline = [
-  { year: "2021", text: "Elizabeth opens Inked Attraction as a single-chair studio in Lagos, focusing on bespoke tattoos and safe piercings." },
-  { year: "2023", text: "The studio adds additional resident artists and expands its custom tattoo and piercing services." },
-  { year: "2024", text: "Inked Attraction moves into a private, appointment-only studio space built for calm consultations." },
-  { year: "2025", text: "The team reaches four resident artists, widening the studio's offered styles and availability." },
-];
 
 export default function AboutPage() {
   return (
@@ -91,21 +85,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline — a real chronological sequence, so numbering earns its place here */}
       <section className="bg-surface py-24 sm:py-32">
         <div className="container max-w-2xl">
-          <SectionHeading eyebrow="Since 2015" title="How the studio grew." />
-          <div className="mt-14 space-y-10 border-l border-border pl-8">
-            {timeline.map((t, i) => (
-              <FadeUp key={t.year} delay={i * 0.08} className="relative">
-                <span className="absolute -left-[41px] flex h-5 w-5 items-center justify-center rounded-full border border-gold bg-void text-[10px] text-gold">
-                  &bull;
-                </span>
-                <p className="font-display text-2xl text-gold">{t.year}</p>
-                <p className="mt-2 text-sm leading-relaxed text-muted">{t.text}</p>
-              </FadeUp>
-            ))}
-          </div>
+          <SectionHeading eyebrow="Since 2023" title="A considered space for personal work." />
+          <p className="mt-8 text-sm leading-relaxed text-muted">
+            Inked Attraction Tattoo &amp; Piercing Studio was founded in 2023 in Lagos, with a focus on personal consultation, considered design, and careful aftercare.
+          </p>
         </div>
       </section>
 

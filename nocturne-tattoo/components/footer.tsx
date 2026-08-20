@@ -41,13 +41,24 @@ export function Footer() {
                 Make your next mark <span className="italic text-gold">matter.</span>
               </h2>
             </div>
-            <Link
-              href="/booking"
-              className="group inline-flex w-fit shrink-0 items-center gap-3 rounded-full bg-gold px-6 py-3.5 text-sm font-medium text-void shadow-[0_10px_30px_rgba(212,175,87,0.15)] transition duration-300 hover:-translate-y-1 hover:bg-gold-bright hover:shadow-[0_16px_40px_rgba(212,175,87,0.25)] focus-visible:outline-offset-4"
-            >
-              Book Your Session
-              <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/booking"
+                className="group inline-flex w-fit shrink-0 items-center gap-3 rounded-full bg-gold px-6 py-3.5 text-sm font-medium text-void shadow-[0_10px_30px_rgba(212,175,87,0.15)] transition duration-300 hover:-translate-y-1 hover:bg-gold-bright hover:shadow-[0_16px_40px_rgba(212,175,87,0.25)] focus-visible:outline-offset-4"
+              >
+                Book Your Session
+                <ArrowUpRight size={16} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+              <a
+                href="https://wa.me/2348130381326?text=Hi%2C%20I%27d%20like%20to%20book%20a%20tattoo%20or%20piercing%20session%20at%20Inked%20Attraction."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex w-fit items-center gap-2 rounded-full border border-gold/40 px-5 py-3.5 text-sm text-gold transition hover:border-gold hover:bg-gold/10 focus-visible:outline-offset-4"
+              >
+                WhatsApp
+                <ArrowUpRight size={15} />
+              </a>
+            </div>
           </div>
         </div>
 
@@ -92,15 +103,15 @@ export function Footer() {
               </li>
               <li className="flex gap-3">
                 <Phone size={15} className="mt-0.5 shrink-0 text-gold" />
-                <span>+234 813 038-1326</span>
+                <a href="tel:+2348130381326" className="hover:text-foreground">+234 813 038-1326</a>
               </li>
               <li className="flex gap-3">
                 <Mail size={15} className="mt-0.5 shrink-0 text-gold" />
-                <span>Studio@InkedAttraction.com</span>
+                <a href="mailto:khalilhayfa5@gmail.com" className="hover:text-foreground">khalilhayfa5@gmail.com</a>
               </li>
               <li className="flex gap-3">
                 <Clock size={15} className="mt-0.5 shrink-0 text-gold" />
-                <span>Mon–Sat 10am–10pm<br />Sun 2pm–9pm</span>
+                <span>By appointment — confirm availability during booking.</span>
               </li>
             </ul>
           </div>

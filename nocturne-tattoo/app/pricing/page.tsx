@@ -7,7 +7,7 @@ import { pricingTiers, pricingPolicies } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: "Inked Attraction pricing for tattoos and piercings, including small pieces, medium composition work, and custom sessions.",
+  description: "Inked Attraction pricing is available upon consultation and assessed according to the requested service, design, placement, size, complexity, and session requirements.",
 };
 
 export default function PricingPage() {
@@ -17,8 +17,8 @@ export default function PricingPage() {
         <div className="container">
           <SectionHeading
             eyebrow="Pricing"
-            title="Clear pricing for custom tattoos and piercings."
-            description="These starting points help you plan your piece. Final pricing is confirmed after consultation, once size, detail, and placement are set."
+            title="Pricing shaped around your request."
+            description="Pricing is available upon consultation. Each booking is assessed according to the requested service, design, placement, size, complexity, and session requirements."
           />
         </div>
       </section>
@@ -46,8 +46,8 @@ export default function PricingPage() {
       </section>
 
       <CtaBanner
-        title="Get a firm quote in one conversation."
-        description="Bring your reference images and we'll walk you through sizing, session count, and total cost before you commit."
+        title="Request a personalized quote."
+        description="Bring your reference images and we'll discuss the service, design, placement, complexity, and session requirements during consultation."
       />
     </>
   );

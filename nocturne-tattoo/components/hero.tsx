@@ -22,7 +22,7 @@ export function Hero() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="mb-6 font-mono text-xs uppercase tracking-widest text-gold"
         >
-          Private-Studio Tattoo House &mdash; Est. 2015
+          Inked Attraction — Lagos Tattoo & Piercing Studio
         </motion.p>
 
         <motion.h1
@@ -40,8 +40,7 @@ export function Hero() {
           transition={{ duration: 0.9, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
           className="mt-7 max-w-lg text-lg leading-relaxed text-foreground-secondary"
         >
-          Six resident artists, one shared standard: custom design, unhurried sessions, and work
-          that still reads clean twenty years in.
+          Custom tattoos and professional piercings, shaped through consultation with creativity, precision, and care.
         </motion.p>
 
         <motion.div

@@ -17,15 +17,15 @@ export default function ArtistsPage() {
         <div className="container">
           <SectionHeading
             eyebrow="The Magicians Behind the Ink"
-            title="Three artists, three ways of holding a needle."
-            description="Every artist books their own calendar and sets their own rate for large work, but all share the studio's approach to consultation, hygiene, and honest sizing."
+            title={`${artists.length} artist${artists.length === 1 ? "" : "s"}, one considered studio approach.`}
+            description="Choose an artist whose work fits your idea, or leave the match to the studio during consultation."
           />
         </div>
       </section>
 
       <section className="pb-24 sm:pb-32">
         <div className="container grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {artists.slice(0, 3).map((artist, i) => (
+          {artists.map((artist, i) => (
             <FadeUp key={artist.slug} delay={(i % 3) * 0.08}>
               <ArtistCard artist={artist} index={i} />
             </FadeUp>

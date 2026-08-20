@@ -25,7 +25,7 @@ export default function StylesPage() {
           <SectionHeading
             eyebrow="Range"
             title="Find the visual language that fits."
-            description="Every style below is practiced daily by at least two residents — none are offered as a one-off favour."
+            description="Explore the studio's available tattoo and piercing services, then use a consultation to match your idea with the right approach."
           />
         </div>
       </section>

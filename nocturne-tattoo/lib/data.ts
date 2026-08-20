@@ -53,10 +53,10 @@ export type Artist = {
   name: string;
   role: string;
   styleSlugs: string[];
-  years: number;
+
   bio: string;
   longBio: string;
-  handle: string;
+
   image?: string;
   featured: boolean;
   booksOpen: boolean;
@@ -68,43 +68,16 @@ export const artists: Artist[] = [
     name: "Elizabeth Adedayo Towobola",
     role: "Owner, Founder & Lead Artist",
     styleSlugs: ["custom-tattoos", "fine-line", "cover-ups", "piercings"],
-    years: 3,
+
     bio: "Owner, founder, and lead artist of Inked Attraction.",
     longBio:
       "Elizabeth Adedayo Towobola is the owner, founder, and lead artist of Inked Attraction Tattoo & Piercing Studio. Her work blends custom tattoos, fine-line detail, cover-ups, and professional piercing care into a calm, highly personal studio experience.",
-    handle: "@inked_attraction",
+
     image: "/images/artist/artist1.png",
     featured: true,
     booksOpen: true,
   },
-  {
-    slug: "mock-artist-one",
-    name: "Ayo Morgan",
-    role: "Custom Illustration & Fine Line",
-    styleSlugs: ["custom-tattoos", "fine-line"],
-    years: 5,
-    bio: "A calm, concept-driven artist focused on custom illustration and precise linework.",
-    longBio:
-      "Ayo Morgan is a mock-up studio artist supporting Inked Attraction with custom illustrations, fine-line detail, and thoughtful consultation-led design.",
-    handle: "@ayo.morgan",
-    image: "/images/artist/artist2.jpg",
-    featured: false,
-    booksOpen: true,
-  },
-  {
-    slug: "mock-artist-two",
-    name: "Tomi Adeyemi",
-    role: "Cover-Ups & Blackwork",
-    styleSlugs: ["cover-ups", "custom-tattoos"],
-    years: 4,
-    bio: "A studio-based artist focused on bold cover-ups and graphic custom work.",
-    longBio:
-      "Tomi Adeyemi is a mock-up studio artist supporting Inked Attraction with bold cover-up planning, clean custom compositions, and strong graphic structure.",
-    handle: "@tomi.adeyemi",
-    image: "/images/artist/artist3.jpg",
-    featured: false,
-    booksOpen: true,
-  },
+
 ];
 
 export type GalleryPiece = {
@@ -117,16 +90,8 @@ export type GalleryPiece = {
   image?: string;
 };
 
-const aspects: GalleryPiece["aspect"][] = ["square", "portrait", "tall", "wide"];
-const titleWords = [
-  "Hollow Bloom", "Quiet Static", "Ember Line", "Salt & Bone", "Low Tide",
-  "Split Oak", "Ash Field", "Wire Moth", "Marrow", "Dust Compass",
-  "Night Chart", "Rib Line", "Slow Bloom", "Faultline", "Vellum",
-  "Cinder", "Half Moon Study", "Grain", "Undertow", "Loose Thread",
-];
-
-const fwcImages = [
-  "/images/porfolio/po1.jpeg",
+const galleryImages = [
+  "/images/fwc1.jpg",
   "/images/fwc2.jpg",
   "/images/fwc3.jpg",
   "/images/fwc4.jpg",
@@ -134,77 +99,37 @@ const fwcImages = [
   "/images/fwc6.jpg",
 ];
 
-const portfolioImages = [
-  "/images/fwc0.jpg",
-  "/images/porfolio/po2.jpg",
-  "/images/porfolio/po3.jpg",
-  "/images/porfolio/po4.jpg",
-  "/images/porfolio/po5.jpeg",
-  "/images/porfolio/po6.jpg",
-  "/images/porfolio/po7.jpg",
-  "/images/porfolio/po8.jpg",
-  "/images/porfolio/po9.jpg",
-  "/images/porfolio/po11.jpeg",
-  "/images/porfolio/po12.jpg",
-  "/images/porfolio/po13.jpg",
-  "/images/porfolio/po15.jpg",
-  "/images/porfolio/po16.jpg",
-  "/images/porfolio/po17.jpg",
-  "/images/porfolio/po18.jpeg",
-  "/images/porfolio/po19.jpg",
-  "/images/porfolio/po1.jpeg",
-];
-
-export const gallery: GalleryPiece[] = Array.from({ length: 24 }).map((_, i) => {
-  const artist = artists[i % artists.length];
-  const style = artist.styleSlugs[i % artist.styleSlugs.length];
-  let image: string | undefined;
-  
-  if (i < 6) {
-    image = fwcImages[i];
-  } else if (i < 24) {
-    image = portfolioImages[i - 6];
-  }
-  
-  return {
-    id: `piece-${i + 1}`,
-    artistSlug: artist.slug,
-    styleSlug: style,
-    title: titleWords[i % titleWords.length],
-    aspect: aspects[i % aspects.length],
-    seed: i + 1,
-    image,
-  };
-});
+export const gallery: GalleryPiece[] = galleryImages.map((image, index) => ({
+  id: `piece-${index + 1}`,
+  artistSlug: "",
+  styleSlug: "custom-tattoos",
+  title: `Portfolio image ${String(index + 1).padStart(2, "0")}`,
+  aspect: index % 2 === 0 ? "portrait" : "square",
+  seed: index + 1,
+  image,
+}));
 
 export type Testimonial = {
   name: string;
   quote: string;
-  artistSlug: string;
-  rating: number;
+  attribution: "Client Testimonial";
 };
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Chidera A.",
-    quote:
-      "Elizabeth helped me shape a design that felt personal, clean, and timeless. The process was calm, clear, and beautifully executed.",
-    artistSlug: "elizabeth-adedayo-towobola",
-    rating: 5,
+    name: "Aladdin N.",
+    quote: "Elizabeth took the time to refine my ideas into a clean, timeless, and deeply personal piece. The entire session was serene, straightforward, and expertly crafted.",
+    attribution: "Client Testimonial",
   },
   {
-    name: "Femi O.",
-    quote:
-      "The consultation was thoughtful and honest, and the final piece feels like it belongs to me.",
-    artistSlug: "elizabeth-adedayo-towobola",
-    rating: 5,
+    name: "Taven L.",
+    quote: "The initial discussion was sincere and insightful, resulting in a custom tattoo that truly feels like an extension of myself.",
+    attribution: "Client Testimonial",
   },
   {
-    name: "Grace T.",
-    quote:
-      "Every step felt professional and intentional, from the design planning to the aftercare guidance.",
-    artistSlug: "elizabeth-adedayo-towobola",
-    rating: 5,
+    name: "Amir Danmusa.",
+    quote: "Every phase was handled with clear focus and professionalism, starting from the preliminary design work all the way through to the detailed aftercare instructions.",
+    attribution: "Client Testimonial",
   },
 ];
 
@@ -219,41 +144,31 @@ export type PricingTier = {
 
 export const pricingTiers: PricingTier[] = [
   {
-    name: "Small Piece",
-    price: "₦45,000",
-    unit: "starting",
-    description: "Palm-sized or smaller — a single session, usually under an hour.",
-    features: ["Up to 3 inches", "One sitting", "Free touch-up within 60 days", "Aftercare kit included"],
+    name: "Tattoo consultation",
+    price: "Available upon consultation",
+    unit: "",
+    description: "Pricing is assessed according to the requested service, design, placement, size, complexity, and session requirements.",
+    features: ["Personalized quote", "Design discussion", "Placement and sizing guidance"],
   },
   {
-    name: "Medium Piece",
-    price: "₦120,000",
-    unit: "starting",
-    description: "Forearm or calf-sized detail work, typically a half-day session.",
-    features: ["3–8 inches", "One to two sittings", "Free touch-up within 60 days", "Aftercare kit included"],
-    highlight: true,
-  },
-  {
-    name: "Large / Custom",
-    price: "₦35,000",
-    unit: "per hour",
-    description: "Sleeves, backpieces, and multi-session custom work, billed hourly.",
-    features: ["Unlimited size", "Multi-session planning", "Dedicated design consult", "Priority rebooking"],
-  },
-  {
-    name: "Studio Day Rate",
-    price: "₦280,000",
-    unit: "per day",
-    description: "Full-day booking with one artist for large-scale or travelling clients.",
-    features: ["6–7 hour session", "Private room", "Break-neck project focus", "Includes one revision round"],
+    name: "Piercing consultation",
+    price: "Available upon consultation",
+    unit: "",
+    description: "Discuss the requested piercing, jewellery preferences, relevant sizing, and appointment requirements.",
+    features: ["Service assessment", "Jewellery discussion", "Aftercare guidance"],
   },
 ];
 
 export const pricingPolicies = [
-  "A non-refundable deposit (deducted from the final price) confirms every booking.",
-  "Final price depends on size, placement, detail, and session count — quoted after consult.",
-  "Rescheduling needs at least 48 hours' notice or the deposit is forfeited.",
-  "Touch-ups are free within 60 days of the original session for work healed as instructed.",
+  "Booking & Consultation — Begin with a consultation so the requested service and requirements can be understood.",
+  "Design & Consultation — Design, placement, size, complexity, and session requirements are reviewed before a personalized quote is provided.",
+  "Appointment Confirmation — Appointment details are confirmed directly with the studio after consultation.",
+  "Rescheduling & Cancellation — TODO(confirm-with-studio): Confirm the studio's approved rescheduling and cancellation policy.",
+  "Deposits & Payments — TODO(confirm-with-studio): Confirm the studio's approved deposit, payment, and refund policy.",
+  "Piercing Policy — Piercing requests are assessed according to location, jewellery preferences, sizing information, and appointment requirements.",
+  "Aftercare — Aftercare guidance is provided for the booked service.",
+  "Client Responsibility — Clients should provide accurate booking information and follow the studio's service and aftercare guidance.",
+  "Policy Updates — The studio may update its customer policies as needed; the current version will be available through the website.",
 ];
 
 export type FaqItem = { question: string; answer: string };
@@ -277,7 +192,7 @@ export const faqs: FaqItem[] = [
   {
     question: "How much does a tattoo cost?",
     answer:
-      "See the Pricing page for our standard tiers. Custom and large-scale work is quoted after a consult, since size, detail, and placement all move the number.",
+      "Pricing is available upon consultation. Each booking is assessed according to the requested service, design, placement, size, complexity, and session requirements.",
   },
   {
     question: "Does it hurt, and how long does healing take?",
@@ -292,12 +207,12 @@ export const faqs: FaqItem[] = [
   {
     question: "What's your deposit and cancellation policy?",
     answer:
-      "A deposit confirms any booking and is deducted from the final price. It's non-refundable but transferable once if you reschedule with 48 hours' notice.",
+      "TODO(confirm-with-studio): Confirm the studio's approved deposit, payment, cancellation, refund, and rescheduling policy details.",
   },
   {
     question: "Is the studio safe and sterile?",
     answer:
-      "All equipment is single-use or autoclave-sterilised between every client, and every artist holds a current bloodborne pathogen certification, renewed annually.",
+      "The studio will provide service and aftercare information during consultation and appointment confirmation.",
   },
   {
     question: "Can I get a tattoo covered up?",
@@ -307,7 +222,7 @@ export const faqs: FaqItem[] = [
   {
     question: "What age do I need to be?",
     answer:
-      "18 with valid photo ID, no exceptions, regardless of parental consent.",
+      "TODO(confirm-with-studio): Confirm the studio's approved age and identification policy before publishing specific requirements.",
   },
 ];
 
@@ -398,5 +313,5 @@ export const sizeOptions = [
 ];
 
 export const budgetRanges = [
-  "₦45,000 – ₦100,000", "₦100,000 – ₦250,000", "₦250,000 – ₦500,000", "₦500,000+",
+  "Please discuss your budget during consultation",
 ];

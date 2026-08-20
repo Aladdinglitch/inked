@@ -40,6 +40,9 @@ type PiercingFormState = {
   navelDetail: string;
   nippleDetail: string;
   locationDetail: string;
+  jewelryPreference: string;
+  jewelryMaterial: string;
+  gauge: string;
   preferredDate: string;
   timeOfDay: string;
   notes: string;
@@ -73,6 +76,9 @@ const piercingInitialState: PiercingFormState = {
   navelDetail: "",
   nippleDetail: "",
   locationDetail: "",
+  jewelryPreference: "",
+  jewelryMaterial: "",
+  gauge: "",
   preferredDate: "",
   timeOfDay: "",
   notes: "",
@@ -82,7 +88,7 @@ const piercingInitialState: PiercingFormState = {
 };
 
 const tattooSteps = ["Service", "Artist", "Style", "Placement", "Size", "Budget", "Dates", "References", "Contact"];
-const piercingSteps = ["Service", "Location", "Dates", "Contact"];
+const piercingSteps = ["Service", "Location", "Jewellery", "Gauge", "Dates", "Contact"];
 
 const PIERCING_FOLLOW_UP_LOCATIONS = ["Ear", "Nose", "Navel", "XXX-Section", "Nipple"] as const;
 
@@ -117,8 +123,12 @@ export function BookingForm() {
         case 1:
           return piercingForm.piercingLocation !== "";
         case 2:
-          return piercingForm.preferredDate !== "";
+          return piercingForm.jewelryPreference.trim() !== "" && piercingForm.jewelryMaterial.trim() !== "";
         case 3:
+          return piercingForm.gauge.trim() !== "";
+        case 4:
+          return piercingForm.preferredDate !== "";
+        case 5:
           return piercingForm.name.trim() !== "" && /\S+@\S+\.\S+/.test(piercingForm.email);
         default:
           return true;
@@ -222,7 +232,12 @@ export function BookingForm() {
             <>
               <SummaryRow label="Service" value={piercingForm.serviceType} />
               <SummaryRow label="Location" value={piercingForm.piercingLocation} />
-              <SummaryRow label="Preferred date" value={piercingForm.preferredDate} last />
+              <SummaryRow label="Location detail" value={piercingForm.earPart || piercingForm.noseDetail || piercingForm.navelDetail || piercingForm.nippleDetail || piercingForm.locationDetail} />
+              <SummaryRow label="Jewellery preference" value={piercingForm.jewelryPreference} />
+              <SummaryRow label="Jewellery material" value={piercingForm.jewelryMaterial} />
+              <SummaryRow label="Gauge information" value={piercingForm.gauge} />
+              <SummaryRow label="Preferred date" value={piercingForm.preferredDate} />
+              <SummaryRow label="Time of day" value={piercingForm.timeOfDay} last />
             </>
           ) : (
             <>
@@ -310,6 +325,7 @@ export function BookingForm() {
                   {artists.map((a, i) => (
                     <button
                       key={a.slug}
+                      type="button"
                       onClick={() => updateTattoo("artist", a.slug)}
                       className={cn(
                         "overflow-hidden rounded-lg border text-left transition-colors",
@@ -330,6 +346,7 @@ export function BookingForm() {
                     </button>
                   ))}
                   <button
+                    type="button"
                     onClick={() => updateTattoo("artist", "no-preference")}
                     className={cn(
                       "flex flex-col items-center justify-center rounded-lg border p-4 text-center transition-colors",
@@ -424,6 +441,7 @@ export function BookingForm() {
                       >
                         {name}
                         <button
+                          type="button"
                           onClick={() => updateTattoo("files", tattooForm.files.filter((_, idx) => idx !== i))}
                           aria-label={`Remove ${name}`}
                           className="text-muted hover:text-oxblood-bright"
@@ -600,6 +618,28 @@ export function BookingForm() {
             )}
 
             {serviceType === "piercing" && step === 2 && (
+              <StepShell title="Jewellery details" subtitle="Tell us what you would like, or what you need help choosing.">
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div>
+                    <Label htmlFor="jewelry-preference">Jewellery preference</Label>
+                    <Input id="jewelry-preference" value={piercingForm.jewelryPreference} onChange={(e) => updatePiercing("jewelryPreference", e.target.value)} placeholder="Type or describe a preference" />
+                  </div>
+                  <div>
+                    <Label htmlFor="jewelry-material">Jewellery material</Label>
+                    <Input id="jewelry-material" value={piercingForm.jewelryMaterial} onChange={(e) => updatePiercing("jewelryMaterial", e.target.value)} placeholder="Type or ask for guidance" />
+                  </div>
+                </div>
+              </StepShell>
+            )}
+
+            {serviceType === "piercing" && step === 3 && (
+              <StepShell title="Gauge information" subtitle="Share a known gauge, or tell us you need guidance.">
+                <Label htmlFor="piercing-gauge">Gauge or sizing note</Label>
+                <Input id="piercing-gauge" value={piercingForm.gauge} onChange={(e) => updatePiercing("gauge", e.target.value)} placeholder="Type a gauge or request studio guidance" />
+              </StepShell>
+            )}
+
+            {serviceType === "piercing" && step === 4 && (
               <StepShell title="Preferred dates" subtitle="Give us a target date and a time of day that suits you.">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
@@ -633,7 +673,7 @@ export function BookingForm() {
               </StepShell>
             )}
 
-            {serviceType === "piercing" && step === 3 && (
+            {serviceType === "piercing" && step === 5 && (
               <StepShell title="Contact information" subtitle="So we know where to send the confirmation.">
                 <ContactFields
                   name={piercingForm.name}

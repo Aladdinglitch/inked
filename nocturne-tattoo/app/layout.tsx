@@ -25,19 +25,31 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "TattooParlor",
+  name: "Inked Attraction Tattoo & Piercing Studio",
+  areaServed: "Lagos, Lagos State, Nigeria",
+  telephone: "+234 813 038-1326",
+  email: "khalilhayfa5@gmail.com",
+  sameAs: ["https://wa.me/2348130381326?text=Hi%2C%20I%27d%20like%20to%20book%20a%20tattoo%20or%20piercing%20session%20at%20Inked%20Attraction."],
+  ...(siteUrl ? { url: siteUrl } : {}),
+};
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://inkedattraction.example"),
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
   title: {
-    default: "Inked Attraction — Lagos Tattoo & Piercing Studio",
+    default: "Inked Attraction Tattoo & Piercing Studio — Lagos",
     template: "%s | Inked Attraction",
   },
   description:
-    "Inked Attraction is a Lagos tattoo and piercing studio delivering custom work, precision piercing, and premium aftercare guidance.",
+    "Inked Attraction Tattoo & Piercing Studio in Lagos offers custom tattoos and professional piercings shaped through consultation, creativity, precision, and care.",
   keywords: ["tattoo studio", "piercing studio", "Lagos tattoo", "custom tattoo", "fine line tattoo"],
   openGraph: {
     title: "Inked Attraction",
     description:
-      "Custom tattoos and precision piercings in Lagos, Nigeria — designed with artistry, care, and longevity in mind.",
+      "Custom tattoos and precision piercings in Lagos, Nigeria — shaped through consultation with artistry, care, and attention to detail.",
     type: "website",
     siteName: "Inked Attraction",
   },
@@ -60,6 +72,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         <StaticNetlifyForms />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+        />
         <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
@@ -82,7 +98,7 @@ function StaticNetlifyForms() {
         <input name="bot-field" />
         {[
           "serviceType", "piercingLocation", "earPart", "earSide", "noseDetail", "navelDetail",
-          "nippleDetail", "locationDetail", "preferredDate", "timeOfDay", "notes", "name", "email", "phone",
+          "nippleDetail", "locationDetail", "jewelryPreference", "jewelryMaterial", "gauge", "preferredDate", "timeOfDay", "notes", "name", "email", "phone",
         ].map((name) => <input key={name} name={name} />)}
       </form>
       <form name="contact-inquiry" data-netlify="true" data-netlify-honeypot="bot-field" method="POST">

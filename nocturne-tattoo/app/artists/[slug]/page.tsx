@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Instagram } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { artists, styles, gallery } from "@/lib/data";
 import { InkArt } from "@/components/ink-art";
 import { FadeUp } from "@/components/fade-up";
@@ -59,18 +59,7 @@ export default function ArtistProfilePage({ params }: { params: { slug: string }
               ))}
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <span className="text-sm text-foreground-muted">{artist.years} years tattooing</span>
-              <span className="text-border">&middot;</span>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-sm text-foreground-muted hover:text-gold"
-              >
-                <Instagram size={14} /> {artist.handle}
-              </a>
-            </div>
+            <p className="mt-8 text-xs text-foreground-muted">TODO(confirm-with-studio): Confirm public artist experience and social profile details.</p>
 
             <div className="mt-9 flex flex-col gap-4 sm:flex-row">
               {artist.booksOpen ? (

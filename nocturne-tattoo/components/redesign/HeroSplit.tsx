@@ -10,26 +10,26 @@ const SLIDE_DURATION = 5500;
 const heroSlides = [
   {
     image: "/images/porfolio/Heroshow/b14.jpg",
-    title: "Black Orchid",
-    medium: "Blackwork",
+    title: "Portfolio image 01",
+    medium: "Portfolio work",
     objectPosition: "center 38%",
   },
   {
     image: "/images/fwc2.jpg",
-    title: "Quiet Static",
-    medium: "Fine line",
+    title: "Portfolio image 02",
+    medium: "Portfolio work",
     objectPosition: "center center",
   },
   {
     image: "/images/fwc4.jpg",
-    title: "Salt & Bone",
-    medium: "Piercing",
+    title: "Portfolio image 03",
+    medium: "Portfolio work",
     objectPosition: "center center",
   },
   {
     image: "/images/fwc6.jpg",
-    title: "Split Oak",
-    medium: "Custom tattoo",
+    title: "Portfolio image 04",
+    medium: "Portfolio work",
     objectPosition: "center center",
   },
 ];
@@ -69,7 +69,8 @@ export default function HeroSplit() {
       }}
       onTouchEnd={(event) => {
         if (touchStart.current === null) return;
-        const delta = event.changedTouches[0]?.clientX - touchStart.current;
+        const touchEnd = event.changedTouches[0]?.clientX;
+        const delta = touchEnd === undefined ? 0 : touchEnd - touchStart.current;
         touchStart.current = null;
         if (Math.abs(delta) < 48) return;
         setActiveIndex((index) => (index + (delta < 0 ? 1 : -1) + heroSlides.length) % heroSlides.length);

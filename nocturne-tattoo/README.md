@@ -39,7 +39,7 @@ npm run lint    # ESLint (next/core-web-vitals ruleset) — currently clean
   `pathLength`, standing in for one unbroken tattoo pass. Used as a
   section divider instead of a plain rule.
 
-## Original placeholder artwork
+## Artwork and content status
 
 No stock photography or external imagery is used anywhere in the
 project. `components/ink-art.tsx` is a small deterministic generator
@@ -47,8 +47,7 @@ project. `components/ink-art.tsx` is a small deterministic generator
 per tattoo category (blackwork, fine line, ornamental, etc.). Same
 seed always produces the same art, so a given artist/piece looks
 consistent across pages. This keeps the project fully original and
-copyright-clean, and doubles as a fitting aesthetic for a tattoo
-studio's placeholder content.
+copyright-clean, and is used only where no approved studio image is available. Replace generated artwork with approved studio assets before publishing those surfaces.
 
 If you want to swap in real photography later, replace `<InkArt />`
 usages with `next/image` and add your image host to
@@ -66,14 +65,8 @@ Journal/Blog (`/blog`, `/blog/[slug]`)
   live search, favorites (persisted to `localStorage`), infinite
   scroll via `IntersectionObserver`, and a keyboard-navigable lightbox
   (Esc / ←/→).
-- **Booking** (`/booking`): 8-step wizard (artist → style → placement
-  → size → budget → dates → reference upload → contact) with animated
-  step transitions, per-step validation, and a success confirmation
-  screen. No backend is wired up — submission is simulated client-side
-  and logs a summary; wire `onSubmit` to your API/email service to go
-  live.
-- **Contact form**: same simulate-and-confirm pattern, ready to be
-  connected to a real endpoint.
+- **Booking** (`/booking`): Separate tattoo and piercing flows with animated step transitions, per-step validation, confirmation summaries, and Netlify Forms submission.
+- **Contact form**: Uses the `contact-inquiry` Netlify Form.
 
 ## SEO / performance notes
 
@@ -94,12 +87,13 @@ meaningful against `next dev`.
 
 ## Deploying
 
-Ready for Vercel (`vercel deploy`) or any Node host that supports
-Next.js 14. Update `metadataBase` in `app/layout.tsx` and the sitemap's
-`base` constant to your real domain before going live.
+The production origin is configured with `NEXT_PUBLIC_SITE_URL` when available. Keep that value aligned with the deployed site before publishing canonical URLs.
 
 ---
 
-This is a fictional demo studio built for a design brief. Not a real
-business — replace copy, contact details, and placeholder artwork
-before any real-world use.
+Remaining stakeholder confirmations:
+
+- TODO(confirm-with-studio): Confirm official production domain.
+- TODO(confirm-with-studio): Confirm complete public street address.
+- TODO(confirm-with-studio): Confirm public artist experience and approved social profile details.
+- TODO(confirm-with-studio): Confirm exact deposit, payment, cancellation, refund, and rescheduling policy details.
